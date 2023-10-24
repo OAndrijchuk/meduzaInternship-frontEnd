@@ -1,6 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+Global variables must be added before use (exemple theyr are in .env.sample filed):
+- DB_HOST - write your dataBase link
+- PORT - wite port when you want to start this project
 
 First, run the development server:
 

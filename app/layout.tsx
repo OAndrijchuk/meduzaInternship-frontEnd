@@ -1,3 +1,5 @@
+import { Footer } from '@/Components/Footer/Footer'
+import { Header } from '@/Components/Header/Header'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -12,7 +14,11 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }
