@@ -1,7 +1,10 @@
-
+ import * as dotenv from 'dotenv';
 import styles from './page.module.css'
 
+dotenv.config();
+
 export default async function Home() {
+   console.log(`"App started on port: ${process.env.PORT}"`);
   return (
     <main className={styles.main}>
     
