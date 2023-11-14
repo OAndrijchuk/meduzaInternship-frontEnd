@@ -9,14 +9,25 @@ import { MailOutline } from '@mui/icons-material';
 import { Button, Paper, TextField, Typography} from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import { useSignInMutation, userAPI } from '@/redux/users/userAPI';
+import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/hooks/redux';
+import { setUserData } from '@/redux/users/usersSlice';
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [signIn, { data, isSuccess, isError, error, isLoading }] = useSignInMutation();
+  const router = useRouter()
+  const dispatch = useAppDispatch();
+
+    React.useEffect(() => {
+        if (data?.token&&isSuccess) {
+        router.push("/")
+      }
+    },[data, router, isSuccess])
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+
 
 const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -24,13 +35,18 @@ const formik = useFormik({
     email: Yup.string().email('Email is not correct').required('Email is required'),
     password: Yup.string().min(6,'Password should be of minimum 8 characters length').required('Password is required'),
   }),
-    onSubmit: (values) => {
-      console.log(values);
+  onSubmit: async (values) => {
+    const { email, password } = values;
+    const userData = await signIn({ email, password }).unwrap()
+    dispatch(setUserData(userData));
     },
-  });
+});
   
-  return (
-    <>
+return (
+  <>
+    {isLoading && <h1>Loading...</h1>}
+    {isError && <h1>{`${error?.data?.message}`}</h1>}
+    {isSuccess && <h1>{`Hallo ${data?.user?.userName}`}</h1>}
     <Paper elevation={3} component={'form'} onSubmit={formik.handleSubmit} sx={{
       display: 'flex',
       flexDirection: "column",
@@ -78,7 +94,6 @@ const formik = useFormik({
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
