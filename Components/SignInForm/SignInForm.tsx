@@ -45,7 +45,6 @@ const formik = useFormik({
 return (
   <>
     {isLoading && <h1>Loading...</h1>}
-    {isError && <h1>{`${error?.data?.message}`}</h1>}
     {isSuccess && <h1>{`Hallo ${data?.user?.userName}`}</h1>}
     <Paper elevation={3} component={'form'} onSubmit={formik.handleSubmit} sx={{
       display: 'flex',
