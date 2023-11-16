@@ -1,12 +1,13 @@
 
 import SignInForm from '@/Components/SignInForm/SignInForm';
+import { ContainerStyled } from './signIn.styled';
 
 
 export default async function SignIn() {
 
   return (
-    <div >
+    <ContainerStyled >
       <SignInForm/>
-    </div>
+    </ContainerStyled>
   )
 }

@@ -9,19 +9,17 @@ import { MailOutline } from '@mui/icons-material';
 import { Button, Paper, TextField, Typography} from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { useSignInMutation, userAPI } from '@/redux/users/userAPI';
+import { useSignInMutation } from '@/redux/users/userAPI';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/hooks/redux';
-import { setUserData } from '@/redux/users/usersSlice';
+
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [signIn, { data, isSuccess, isError, error, isLoading }] = useSignInMutation();
   const router = useRouter()
-  const dispatch = useAppDispatch();
 
     React.useEffect(() => {
-        if (data?.token&&isSuccess) {
+        if (data?.token && isSuccess) {
         router.push("/")
       }
     },[data, router, isSuccess])
@@ -38,7 +36,6 @@ const formik = useFormik({
   onSubmit: async (values) => {
     const { email, password } = values;
     const userData = await signIn({ email, password }).unwrap()
-    dispatch(setUserData(userData));
     },
 });
   
@@ -57,48 +54,48 @@ return (
       }}>
       <Typography component="h2" sx={{ fontSize: 24, fontWeight: 600, color: 'rgba(0, 0, 0, 0.54)' }}>Sign In</Typography>
       <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
-          <TextField
-            id="email"
-            type='email'
-            name='email'
-            variant="standard"
-            label="Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end" sx={{ p: 1}}>
-                  <MailOutline />
-                </InputAdornment>)
-            }}  
-          />
-        </FormControl>
-        <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
-          <TextField
-            id="standard-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            name='password'
-            label="Password"
-            variant="standard"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>)
-            }}
-          />
+        <TextField
+          id="email"
+          type='email'
+          name='email'
+          variant="standard"
+          label="Email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end" sx={{ p: 1}}>
+                <MailOutline />
+              </InputAdornment>)
+          }}  
+        />
+      </FormControl>
+      <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
+        <TextField
+          id="standard-adornment-password"
+          type={showPassword ? 'text' : 'password'}
+          name='password'
+          label="Password"
+          variant="standard"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>)
+          }}
+        />
       </FormControl>
       <Button variant="contained" type="submit" sx={{ width: '100%' }} size='large'>Sign In</Button>
     </Paper></>
