@@ -1,9 +1,9 @@
 'use client'
 import { styled } from "@mui/material/styles";
 
-export const Test = styled("div")(() => ({
+export const ContainerStyled:any = styled("div")(() => ({
     width: "100%",
-    height: "80vh",
+    minHeight: "calc(100vh - 160px)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

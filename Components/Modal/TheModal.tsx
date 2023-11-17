@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import { ModalCont, ModalOverlay } from './TheModal.styled';
 import { Button } from '@mui/material';
@@ -11,7 +12,7 @@ type Props={
 export default function TheModal({children}: Props) {
   const router = useRouter()
    React.useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+    const handleEscape:any = (e: KeyboardEvent) => {
       if (e.code === 'Escape') {
         router.back()
       }

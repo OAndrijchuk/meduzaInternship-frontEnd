@@ -1,12 +1,13 @@
-import MockComponent from "@/Components/MockComponent/MockComponent";
+
+import SignInForm from '@/Components/SignInForm/SignInForm';
+import { ContainerStyled } from './signIn.styled';
 
 
 export default async function SignIn() {
 
   return (
-    <div >
-      <h1>This is page signIn!!!</h1>
-      <MockComponent/>
-    </div>
+    <ContainerStyled >
+      <SignInForm/>
+    </ContainerStyled>
   )
 }
