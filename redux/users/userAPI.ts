@@ -30,6 +30,18 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 return response;
             },
         }),
+        getToken: build.mutation({
+            query: (body) => ({
+                url: 'auth/signUp',
+                method: 'POST',
+                body
+            }),
+            
+            transformResponse: response => {
+                console.log('transform', response);
+                return response;
+            },
+        }),
     }),
     overrideExisting: false,
 });

@@ -98,6 +98,8 @@ return (
         />
       </FormControl>
       <Button variant="contained" type="submit" sx={{ width: '100%' }} size='large'>Sign In</Button>
+      <a href='/api/auth/login'>Sign in</a>
+      <a href='/api/auth/logout'>Sign out</a>
     </Paper></>
   );
 }
