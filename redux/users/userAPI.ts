@@ -13,6 +13,7 @@ export const userAPI = globalSplitApi.injectEndpoints({
                     console.log("Loading...");
                 try {
                     const { data } = await queryFulfilled
+                    
                     dispatch(setUserData(data))
                 } catch (err) {
                     console.log(err);
