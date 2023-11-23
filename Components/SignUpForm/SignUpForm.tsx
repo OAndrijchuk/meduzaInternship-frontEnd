@@ -5,7 +5,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { MailOutline } from '@mui/icons-material';
+import { MailOutline, Person } from '@mui/icons-material';
 import { Box, Button, Paper, TextField, Typography} from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
@@ -17,10 +17,8 @@ import { useAppDispatch } from '@/hooks/redux';
 import { signIn } from 'next-auth/react';
 
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [manualSignIn, { data: manualMe, isSuccess: isSignIn }] = useSignInMutation();
-  const [getMe,{data:auth0Me, isSuccess:isMeAuth}]=useGetMeMutation()
   const dispatch = useAppDispatch();
   const router = useRouter()
 
@@ -30,55 +28,18 @@ export default function SignInForm() {
     //   }
     // }, [manualMe, router, isSignIn, auth0Me, isMeAuth])
   
-   const {
-        isLoading:isLoad,
-        isAuthenticated,
-        error:err,
-        loginWithRedirect,
-        logout,
-        getAccessTokenSilently
-   } = useAuth0();
-  const getToken = async () => {
-     try {
-      if (isAuthenticated) {
-         const token = await getAccessTokenSilently()
-        const user0 = await getMe(token);
-        dispatch(setUserData(user0));
-        dispatch(setUserToken(token));
-         console.log(token);
-         console.log(user0);
-        }
-     } catch (error) {
-      console.log(error);
-      
-     }
-       
-  }
-  React.useEffect(() => {
-    getToken()
-  }, [isAuthenticated]);
 
 const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 const formik = useFormik({
-    initialValues: { email: '', password: '' },
-    validationSchema:  Yup.object().shape({
+    initialValues: { userName: '', email: '', password: '' },
+  validationSchema: Yup.object().shape({
+    userName: Yup.string().min(3, 'Login should be of minimum 3 characters length').required('Login is required'),
     email: Yup.string().email('Email is not correct').required('Email is required'),
     password: Yup.string().min(6,'Password should be of minimum 8 characters length').required('Password is required'),
   }),
   onSubmit: async (values) => {
-    const { email, password } = values;
-    // const {user,token} = await signIn({ email, password }).unwrap()
-    // dispatch(setUserData(user));
-    // dispatch(setUserToken(token));
-    const rez = await signIn('credentials',{ email, password, redirect: false })
-    console.log(rez);
-    if (rez && !rez.error) {
-      router.push('/')
-    } else {
-      console.log(rez);
-      
-    }
+      const { email, password, userName } = values;
     
     },
 });
@@ -95,7 +56,26 @@ return (
         alignItems: "center",
         gap: 2,
       }}>
-      <Typography component="h2" sx={{ fontSize: 24, fontWeight: 600, color: 'rgba(0, 0, 0, 0.54)' }}>Sign In</Typography>
+      <Typography component="h2" sx={{ fontSize: 24, fontWeight: 600, color: 'rgba(0, 0, 0, 0.54)' }}>Sign Up</Typography>
+      <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
+        <TextField
+          id="userName"
+          type='text'
+          name='userName'
+          variant="standard"
+          label="Email"
+          value={formik.values.userName}
+          onChange={formik.handleChange}
+          error={formik.touched.userName && Boolean(formik.errors.userName)}
+          helperText={formik.touched.userName && formik.errors.userName}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end" sx={{ p: 1}}>
+                <Person />
+              </InputAdornment>)
+          }}  
+        />
+      </FormControl>
       <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
         <TextField
           id="email"
@@ -140,7 +120,7 @@ return (
           }}
         />
       </FormControl>
-      <Button variant="contained" type="submit" sx={{ width: '100%' }} size='large'>Sign In</Button>
+      <Button variant="contained" type="submit" sx={{ width: '100%' }} size='large'>Sign Up</Button>
     </Box>
   </>
   );

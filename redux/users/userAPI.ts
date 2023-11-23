@@ -11,10 +11,11 @@ export const userAPI = globalSplitApi.injectEndpoints({
             }),
            async onQueryStarted(id, { dispatch, queryFulfilled }) {
                     console.log("Loading...");
-                try {
-                    const { data } = await queryFulfilled
+               try {
+                   const { data } = await queryFulfilled
                     
-                    dispatch(setUserData(data))
+                //    dispatch(setIsAuth(true));
+                   dispatch(setUserData(data));
                 } catch (err) {
                     console.log(err);
                 }
@@ -31,20 +32,29 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 return response;
             },
         }),
-        getToken: build.mutation({
-            query: (body) => ({
-                url: 'auth/signUp',
-                method: 'POST',
-                body
+        getMe: build.mutation({
+            query: (token) => ({
+                url: 'auth/me',
+                method: 'GET',
+                headers:{Authorization:`Bearer ${token}`}
             }),
-            
-            transformResponse: response => {
-                console.log('transform', response);
-                return response;
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                    console.log("Loading...");
+               try {
+                   const { data } = await queryFulfilled
+                    
+                //    dispatch(setIsAuth(true));
+                   dispatch(setUserData(data));
+                   console.log(data);
+                   
+                } catch (err) {
+                    console.log(err);
+                }
             },
+            
         }),
     }),
     overrideExisting: false,
 });
 
-export const {useSignInMutation, useSignUpMutation } = userAPI;
+export const {useSignInMutation, useSignUpMutation, useGetMeMutation } = userAPI;

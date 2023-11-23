@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 interface UsersState {
     user: IUser;
     token: string;
+    isAuth: boolean;
 };
 
 const initialState: UsersState = {
@@ -13,7 +14,8 @@ const initialState: UsersState = {
         email: '',
         isVerify: false
     },
-    token:''
+    token: '',
+    isAuth:false,
 };
 
 const userSlice = createSlice({
@@ -21,13 +23,22 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUserData: (state, { payload }) => {
-            state.token = payload.token;
             state.user = payload.user;
+            state.isAuth = true;
+
+        },
+        setUserToken: (state, { payload }) => {
+            state.token = payload;
+
+        },
+        setIsAuth: (state, { payload }) => {
+            state.isAuth = payload;
+
         }
         
     }
 });
 
 export const userReducer = userSlice.reducer;
-export const { setUserData } = userSlice.actions;
+export const { setUserData, setUserToken, setIsAuth } = userSlice.actions;
 

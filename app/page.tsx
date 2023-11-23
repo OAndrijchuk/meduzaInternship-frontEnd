@@ -3,10 +3,15 @@ import * as dotenv from 'dotenv';
 import { HeroTitle } from '@/Components/HeroTitle/HeroTitle';
 import { MainStyled } from './HomePage.styled';
 import TheModal from '@/Components/Modal/TheModal';
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link';
 import TestName from '@/Components/TestName/TestName';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { Button, ButtonBase } from '@mui/material';
+import {useAuth0} from "@auth0/auth0-react";
+import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { setUserToken } from '@/redux/users/usersSlice';
+import { getCsrfToken } from 'next-auth/react';
+
 
 
 type Props = {
@@ -14,15 +19,41 @@ type Props = {
 };
 
 export default function Home({ searchParams }: Props) {
-  const { user, error, isLoading } = useUser();
-  console.log(user);
+  const token = useAppSelector(state => state.user.token)
+  const getToken = async () => {
+    const token = await getCsrfToken()
+   
+    console.log(token);
+
+  }
+  const dispatch = useAppDispatch();
+      const {
+        isLoading,
+        isAuthenticated,
+        error,
+        user,
+        loginWithRedirect,
+        logout,
+        getAccessTokenSilently
+  } = useAuth0();
+  
+  // const getToken = async () => {
+  //      if (isAuthenticated) {
+  //         const token = await getAccessTokenSilently()
+  //         dispatch(setUserToken(token))
+  //         console.log(token); 
+  //       }
+  // }
+  // React.useEffect(() => {
+  //   getToken()
+  // }, [isAuthenticated]);
+  
   
 const showModal = searchParams?.modal;
   return (
     <MainStyled >
       <HeroTitle />
-      <Link href='/api/auth/login'>Sign in</Link>
-      <Link href='/api/auth/logout'>Sign out</Link>
+      <ButtonBase onClick={getToken}>Get token</ButtonBase>
       <Link href="/?modal=true">Subscribe</Link>
       {showModal && <TheModal>
         <TestName/>

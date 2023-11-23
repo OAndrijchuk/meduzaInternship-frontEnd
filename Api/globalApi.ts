@@ -11,6 +11,7 @@ export const globalSplitApi = createApi({
           throw new Error(error.message || 'Something went wrong');
         }
         console.log(response);
+        
         return response.json();
       }
   
