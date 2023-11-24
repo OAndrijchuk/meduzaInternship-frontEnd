@@ -33,10 +33,9 @@ export const userAPI = globalSplitApi.injectEndpoints({
             },
         }),
         getMe: build.mutation({
-            query: (token) => ({
+            query: () => ({
                 url: 'auth/me',
                 method: 'GET',
-                headers:{Authorization:`Bearer ${token}`}
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                     console.log("Loading...");
@@ -44,7 +43,7 @@ export const userAPI = globalSplitApi.injectEndpoints({
                    const { data } = await queryFulfilled
                     
                 //    dispatch(setIsAuth(true));
-                   dispatch(setUserData(data));
+                //    dispatch(setUserData(data));
                    console.log(data);
                    
                 } catch (err) {

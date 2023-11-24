@@ -1,3 +1,4 @@
+import { RootState } from '@/redux/store';
 import { createApi, fetchBaseQuery, BaseQueryFn } from '@reduxjs/toolkit/query/react';
 
 
@@ -13,7 +14,16 @@ export const globalSplitApi = createApi({
         console.log(response);
         
         return response.json();
-      }
+      },
+    prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).user.token
+
+    if (token) {
+      headers.set('authorization', `Bearer ${token}`)
+    }
+
+    return headers
+  },
   
   }),
     reducerPath: 'GlobalAPI',

@@ -44,15 +44,22 @@ export const authConfig: AuthOptions = {
           signIn:'/signIn'
   },
     callbacks: {
-      async jwt({ token, user }) {
+      async jwt({ token, user, account, profile }) {
+
+        console.log('token===>>>',token);
+        console.log('user===>>>',user);
+        console.log('account===>>>',account);
+        console.log('refresh_token===>>>',account?.refresh_token);
+        // { access_token:account?.access_token, id_token:account?.id_token}
         if (user) {
-          return token={...user}
+          return token={...user }
         }
         if (token) {
           if (token.user) {
              return token;
           } else {
-            token.user = { userName: token.name, email: token.email, id: token.id }
+            token.user = { userName: token.name, email: token.email, id: token.id };
+            token.token = account?.id_token ? account?.id_token : ''
             return token;
           }
         }
