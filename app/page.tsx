@@ -1,17 +1,13 @@
 "use client"
-import * as dotenv from 'dotenv';
 import { HeroTitle } from '@/Components/HeroTitle/HeroTitle';
 import { MainStyled } from './HomePage.styled';
 import TheModal from '@/Components/Modal/TheModal';
-import React, { useState } from 'react'
+import React from 'react'
 import Link from 'next/link';
 import TestName from '@/Components/TestName/TestName';
-import { Button, ButtonBase } from '@mui/material';
-import {useAuth0} from "@auth0/auth0-react";
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { setUserToken } from '@/redux/users/usersSlice';
-import { getCsrfToken } from 'next-auth/react';
-import { useGetMeMutation } from '@/redux/users/userAPI';
+import { useRefreshTokenQuery } from '@/redux/users/userAPI';
 
 
 
@@ -20,26 +16,20 @@ type Props = {
 };
 
 export default function Home({ searchParams }: Props) {
-  // const token = useAppSelector(state => state.user.token)
-  const [getMyProfiel, { data }] = useGetMeMutation();
+  const dispatch = useAppDispatch();
+    const { data: newToken }= useRefreshTokenQuery({});
   
-  // const dispatch = useAppDispatch();
-  //     const {
-  //       isLoading,
-  //       isAuthenticated,
-  //       error,
-  //       user,
-  //       loginWithRedirect,
-  //       logout,
-  //       getAccessTokenSilently
-  // } = useAuth0();
-  
+  const refresh = async () => {
+    console.log(newToken);
+    
+  }
   
 const showModal = searchParams?.modal;
   return (
     <MainStyled >
       <HeroTitle />
-      <ButtonBase onClick={getMyProfiel}>Get me</ButtonBase>
+       <button onClick={()=>dispatch(setUserToken(''))}>Remove token</button>
+      <button onClick={refresh}>Show token</button>
       <Link href="/?modal=true">Subscribe</Link>
       {showModal && <TheModal>
         <TestName/>

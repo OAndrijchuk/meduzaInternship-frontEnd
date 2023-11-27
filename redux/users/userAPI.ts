@@ -1,5 +1,7 @@
 import { globalSplitApi } from '@/Api/globalApi';
-import { setUserData } from './usersSlice';
+import { setUserData, setUserToken } from './usersSlice';
+
+
 
 export const userAPI = globalSplitApi.injectEndpoints({
     endpoints: (build) => ({
@@ -13,9 +15,10 @@ export const userAPI = globalSplitApi.injectEndpoints({
                     console.log("Loading...");
                try {
                    const { data } = await queryFulfilled
-                    
-                //    dispatch(setIsAuth(true));
                    dispatch(setUserData(data));
+                    const cookies = data.headers.get('refreshToken');
+                    console.log(cookies);
+
                 } catch (err) {
                     console.log(err);
                 }
@@ -32,7 +35,7 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 return response;
             },
         }),
-        getMe: build.mutation({
+        getProfile: build.query({
             query: () => ({
                 url: 'auth/me',
                 method: 'GET',
@@ -41,12 +44,27 @@ export const userAPI = globalSplitApi.injectEndpoints({
                     console.log("Loading...");
                try {
                    const { data } = await queryFulfilled
-                    
-                //    dispatch(setIsAuth(true));
-                //    dispatch(setUserData(data));
+
                    console.log(data);
                    
                 } catch (err) {
+                    console.log(err);
+                }
+            },
+            
+        }),
+        refreshToken: build.query({
+            query: () => ({
+                url: 'auth/refresh',
+                method: 'GET',
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                    console.log("Loading...");
+               try {
+                    const { data } = await queryFulfilled
+                    dispatch(setUserToken(data.token));
+               } catch (err) {
+                    dispatch(setUserToken(''));
                     console.log(err);
                 }
             },
@@ -56,4 +74,4 @@ export const userAPI = globalSplitApi.injectEndpoints({
     overrideExisting: false,
 });
 
-export const {useSignInMutation, useSignUpMutation, useGetMeMutation } = userAPI;
+export const {useSignInMutation, useSignUpMutation, useGetProfileQuery, useRefreshTokenQuery } = userAPI;

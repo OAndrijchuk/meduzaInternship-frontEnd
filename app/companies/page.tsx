@@ -9,12 +9,12 @@ import { useEffect } from "react";
 export default function Companies() {
   const router = useRouter()
   const isAuth = useAppSelector(getUserToken)
-  
+
   useEffect(() => {
     if (!isAuth) {
       router.push('/signIn');
     }
-  });
+  },[isAuth]);
 
   return (
     <div >

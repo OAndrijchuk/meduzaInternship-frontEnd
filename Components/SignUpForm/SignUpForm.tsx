@@ -9,7 +9,7 @@ import { MailOutline, Person } from '@mui/icons-material';
 import { Box, Button, Paper, TextField, Typography} from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { useGetMeMutation, useSignInMutation } from '@/redux/users/userAPI';
+import { useSignInMutation } from '@/redux/users/userAPI';
 import { useRouter } from 'next/navigation';
 import { useAuth0 } from "@auth0/auth0-react";
 import { setUserData, setUserToken } from '@/redux/users/usersSlice';
@@ -21,11 +21,6 @@ export default function SignUpForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter()
-//  React.useEffect(() => {
-//       if (isSignIn || isAuthenticated) {
-//         router.push("/signIn")
-//       }
-//     }, [ router, isSignIn, isAuthenticated])
 
   
 

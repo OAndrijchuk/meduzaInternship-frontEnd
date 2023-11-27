@@ -3,14 +3,16 @@ import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { useDispatch } from 'react-redux';
 import { setUserData, setUserToken } from '@/redux/users/usersSlice';
+import { useRouter } from 'next/navigation';
 
 const settings = [
-  { label: 'Profile', path: '/profile' },
+  { label: 'Profile', path: '/me' },
   { label: 'Logout', path: '/' }
 ];
 
 const UserMenu = () => {
-  const dispatch = useDispatch()
+  const route = useRouter();
+  const dispatch = useDispatch();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const { logout } = useAuth0();
     
@@ -23,6 +25,9 @@ const UserMenu = () => {
       dispatch(setUserData({}));
       dispatch(setUserToken(''));
       logout();
+    }
+    if (path === '/me') {
+      route.push('/me')
     }
     setAnchorElUser(null);
   };

@@ -2,7 +2,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from './users/usersSlice'
 import { userAPI } from "./users/userAPI";
-import  auth0Api  from "../Api/auth0API";
 import {
 persistStore,
 persistReducer,
@@ -27,16 +26,13 @@ export const store = configureStore({
     reducer: {
         
         [userAPI.reducerPath]:userAPI.reducer,
-        // [auth0Api.reducerPath]:auth0Api.reducer,
         user: authPersistedReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(userAPI.middleware
-      // , auth0Api.middleware,
-    ),
+    }).concat(userAPI.middleware),
     devTools: process.env.NODE_ENV !== 'production',
 })
  
