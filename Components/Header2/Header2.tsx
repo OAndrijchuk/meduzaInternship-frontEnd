@@ -10,12 +10,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import Link from 'next/link';
 import UserMenu from './UserMenu/UserMenu';
 import AuthMenu from './AuthMenu/AuthMenu';
-import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import { setUserData, setUserToken } from '@/redux/users/usersSlice';
+import { useAuth0 } from '@auth0/auth0-react';
+import { getUserToken } from '@/redux/users/selectors';
+import { Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/hooks/redux';
+
 
 
 const pages = [
@@ -25,20 +29,36 @@ const pages = [
 ];
 
 function Header2() {
+    const router = useRouter()
     const dispatch = useDispatch();
-    const session = useSession();
-    
-    useEffect(() => {
-        if (session.data?.token) {
-            dispatch(setUserData(session.data?.user));
-            dispatch(setUserToken(session.data?.token));
-        } else {
-            dispatch(setUserData({}));
-            dispatch(setUserToken(''));
+    const isAuth = useAppSelector(getUserToken)
+  // ==============================auth0-react======================    
+       const {
+        isLoading:isLoad,
+        isAuthenticated,
+        error: err,
+        user,
+        loginWithRedirect,
+        logout,
+        getAccessTokenSilently
+       } = useAuth0();
+  
+     const getToken = async () => {
+     try {
+         if (isAuthenticated) {
+            const { email, name } = user;
+            const token = await getAccessTokenSilently()
+            dispatch(setUserToken(token));
+            dispatch(setUserData({ email, userName: name }));
         }
-
-    }, [session, dispatch]);
-    console.log(session);
+     } catch (error) {
+      console.log(error);
+      
+     } 
+  }
+useEffect(() => {
+    getToken()
+  }, [isAuthenticated]);
     
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
@@ -46,8 +66,23 @@ function Header2() {
     setAnchorElNav(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+    const handleCloseNavMenu = (link = '') => {
+        switch (link) {
+            case "/about":
+                router.push("/companies")
+                break;
+            case "/users":
+                if(isAuth){router.push("/users")}else{router.push("/signIn")}
+                break;
+            case "/companies":
+                if(isAuth){router.push("/companies")}else{router.push("/signIn")}
+                break;
+        
+            default:
+                router.push("/")
+                break;
+        }
+        setAnchorElNav(null);
     };
 
 
@@ -105,11 +140,9 @@ function Header2() {
                 }}
             >
         {pages.map((page) => (
-            <Link href={page.link} style={{textDecoration:'none'}} key={page.label}>
-                <MenuItem  onClick={handleCloseNavMenu} >
+                <MenuItem  onClick={()=>handleCloseNavMenu(page.link)} key={page.label}>
                     <Typography textAlign="center" sx={{fontWeight:"600",color:"#1976d2"}}>{page.label}</Typography>
                     </MenuItem>
-                </Link>
                 ))}
             </Menu>
             </Box>
@@ -134,19 +167,13 @@ function Header2() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
-            <Link
-                key={page.label}
-                href={page.link}
-                onClick={handleCloseNavMenu}
-            >
-                <MenuItem 
+                <MenuItem  onClick={()=>handleCloseNavMenu(page.link)} key={page.label}
                     sx={{ my: 2, color: 'white', display: 'block' }}>
                     {page.label}
                 </MenuItem>
-            </Link>
             ))}
             </Box>
-            {session?.data?<UserMenu />:<AuthMenu/>}
+            {isAuth?<UserMenu />:<AuthMenu/>}
         </Toolbar>
         </Container>
     </AppBar>

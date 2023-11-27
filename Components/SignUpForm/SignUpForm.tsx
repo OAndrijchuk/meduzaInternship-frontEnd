@@ -21,12 +21,12 @@ export default function SignUpForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter()
+//  React.useEffect(() => {
+//       if (isSignIn || isAuthenticated) {
+//         router.push("/signIn")
+//       }
+//     }, [ router, isSignIn, isAuthenticated])
 
-    // React.useEffect(() => {
-    //   if (isSignIn || isMeAuth) {
-    //     router.push("/")
-    //   }
-    // }, [manualMe, router, isSignIn, auth0Me, isMeAuth])
   
 
 const handleClickShowPassword = () => setShowPassword((show) => !show);

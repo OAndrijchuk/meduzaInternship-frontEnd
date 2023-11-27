@@ -1,17 +1,21 @@
 "use client"
+import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 
 const SignInWithSocial = () => {
-    const searchParams = useSearchParams()
-    const callbackUrl = searchParams.get('callbackUrl') || "/";
+
+   const {
+        loginWithRedirect,
+   } = useAuth0();
+  
   return (
       <>
           <Button
               sx={{ width: '100%', border:"1px solid"}}
               size='large'
-              onClick={() => signIn('auth0', { callbackUrl })}
+               onClick={loginWithRedirect}
               type='button'
             >Login from social
           </Button>

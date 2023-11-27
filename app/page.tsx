@@ -22,12 +22,7 @@ type Props = {
 export default function Home({ searchParams }: Props) {
   // const token = useAppSelector(state => state.user.token)
   const [getMyProfiel, { data }] = useGetMeMutation();
-  // const getToken = async () => {
-  //   const token = await getCsrfToken()
-   
-  //   console.log(token);
-
-  // }
+  
   // const dispatch = useAppDispatch();
   //     const {
   //       isLoading,
@@ -38,17 +33,6 @@ export default function Home({ searchParams }: Props) {
   //       logout,
   //       getAccessTokenSilently
   // } = useAuth0();
-  
-  // const getToken = async () => {
-  //      if (isAuthenticated) {
-  //         const token = await getAccessTokenSilently()
-  //         dispatch(setUserToken(token))
-  //         console.log(token); 
-  //       }
-  // }
-  // React.useEffect(() => {
-  //   getToken()
-  // }, [isAuthenticated]);
   
   
 const showModal = searchParams?.modal;

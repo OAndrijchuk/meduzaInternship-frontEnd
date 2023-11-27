@@ -20,17 +20,9 @@ import { signIn } from 'next-auth/react';
 export default function SignInForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [manualSignIn, { data: manualMe, isSuccess: isSignIn }] = useSignInMutation();
-  const [getMe,{data:auth0Me, isSuccess:isMeAuth}]=useGetMeMutation()
   const dispatch = useAppDispatch();
   const router = useRouter()
-
-    // React.useEffect(() => {
-    //   if (isSignIn || isMeAuth) {
-    //     router.push("/")
-    //   }
-    // }, [manualMe, router, isSignIn, auth0Me, isMeAuth])
-  
-   const {
+const {
         isLoading:isLoad,
         isAuthenticated,
         error:err,
@@ -38,25 +30,13 @@ export default function SignInForm() {
         logout,
         getAccessTokenSilently
    } = useAuth0();
-  const getToken = async () => {
-     try {
-      if (isAuthenticated) {
-         const token = await getAccessTokenSilently()
-        const user0 = await getMe(token);
-        dispatch(setUserData(user0));
-        dispatch(setUserToken(token));
-         console.log(token);
-         console.log(user0);
-        }
-     } catch (error) {
-      console.log(error);
-      
-     }
-       
-  }
-  React.useEffect(() => {
-    getToken()
-  }, [isAuthenticated]);
+    React.useEffect(() => {
+      if (isSignIn || isAuthenticated) {
+        router.push("/")
+      }
+    }, [ router, isSignIn, isAuthenticated])
+  
+   
 
 const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -68,18 +48,9 @@ const formik = useFormik({
   }),
   onSubmit: async (values) => {
     const { email, password } = values;
-    // const {user,token} = await signIn({ email, password }).unwrap()
-    // dispatch(setUserData(user));
-    // dispatch(setUserToken(token));
-    const rez = await signIn('credentials',{ email, password, redirect: false })
-    console.log(rez);
-    if (rez && !rez.error) {
-      router.push('/')
-    } else {
-      console.log(rez);
-      
-    }
-    
+    const {user,token} = await manualSignIn({ email, password }).unwrap()
+    dispatch(setUserData(user));
+    dispatch(setUserToken(token)); 
     },
 });
   

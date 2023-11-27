@@ -1,6 +1,8 @@
 import { Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
 import React from 'react'
-import { signOut } from 'next-auth/react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useDispatch } from 'react-redux';
+import { setUserData, setUserToken } from '@/redux/users/usersSlice';
 
 const settings = [
   { label: 'Profile', path: '/profile' },
@@ -8,14 +10,20 @@ const settings = [
 ];
 
 const UserMenu = () => {
+  const dispatch = useDispatch()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const { logout } = useAuth0();
     
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
     
   const handleCloseUserMenu = ( path:string ) => {
-    signOut({callbackUrl:path});
+    if (path === '/') {
+      dispatch(setUserData({}));
+      dispatch(setUserToken(''));
+      logout();
+    }
     setAnchorElUser(null);
   };
   return (

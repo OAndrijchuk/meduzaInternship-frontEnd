@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Auth0Provider } from '@auth0/auth0-react';
-import {SessionProvider} from 'next-auth/react'
 
 const Providers = ({ children }: {
    children: React.ReactNode
@@ -12,7 +11,6 @@ const Providers = ({ children }: {
     return (
         <Provider store={store}>
             <PersistGate persistor={persistor} loading={null}>
-                <SessionProvider>
                     <Auth0Provider
                         domain={`${process.env.NEXT_PUBLIC_REACT_APP_AUTH0_DOMAIN}`}
                         clientId={`${process.env.NEXT_PUBLIC_REACT_APP_AUTH0_CLIENT_ID}`}
@@ -24,7 +22,6 @@ const Providers = ({ children }: {
                     >
                     {children}
                     </Auth0Provider>
-                </SessionProvider>
             </PersistGate>
         </Provider>
   )
