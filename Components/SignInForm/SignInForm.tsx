@@ -49,8 +49,6 @@ const formik = useFormik({
   onSubmit: async (values) => {
     const { email, password } = values;
     const {user,token} = await manualSignIn({ email, password }).unwrap()
-    dispatch(setUserData(user));
-    dispatch(setUserToken(token)); 
     },
 });
   

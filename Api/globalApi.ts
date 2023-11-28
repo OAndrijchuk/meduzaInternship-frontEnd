@@ -1,4 +1,5 @@
 import { RootState } from '@/redux/store';
+import { setIsLoading } from '@/redux/users/usersSlice';
 import { createApi, fetchBaseQuery, BaseQueryFn } from '@reduxjs/toolkit/query/react';
 
 
@@ -8,32 +9,23 @@ export const globalSplitApi = createApi({
     credentials: 'include',
     responseHandler:
       async (response) => {
-        try {
         if (!response.ok) {
           if (response.status === 401) {
             const res = await globalSplitApi.endpoints.refreshToken.query();
-            // return response.json();
           }
-
           const error = await response.json();
           throw new Error(error.message || 'Something went wrong');
         }
-
-        return response.json();
-      } catch (error) {
-        console.log(error);
-      }
-
-        
+          return response.json();
       },
+    
     prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).user.token
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`)
-    }
-
-    return headers
-  },
+      const token = (getState() as RootState).user.token
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`)
+      }
+      return headers
+    },
   
   }),
     reducerPath: 'GlobalAPI',

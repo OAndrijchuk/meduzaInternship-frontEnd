@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const auth0Api = createApi({
     reducerPath: 'auth0Api',
     tagTypes:['token'],
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://dev-pv56md3tahktd2by.us.auth0.com' }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.AUTH0_ISSUER_BASE_URL }),
   endpoints: (builder) => ({
     getToken: builder.mutation({
       query: (body) => ({
@@ -12,13 +12,7 @@ export const auth0Api = createApi({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body,
         async onQueryStarted(id, { dispatch, queryFulfilled }) {
-                    console.log("Loading...");
-                try {
                     const { data } = await queryFulfilled
-                    // dispatch(setUserData(data))
-                } catch (err) {
-                    console.log(err);
-                }
             },
       }),
     }),

@@ -9,20 +9,17 @@ import { MailOutline, Person } from '@mui/icons-material';
 import { Box, Button, Paper, TextField, Typography} from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { useSignInMutation } from '@/redux/users/userAPI';
+import { useSignUpMutation } from '@/redux/users/userAPI';
 import { useRouter } from 'next/navigation';
-import { useAuth0 } from "@auth0/auth0-react";
-import { setUserData, setUserToken } from '@/redux/users/usersSlice';
 import { useAppDispatch } from '@/hooks/redux';
-import { signIn } from 'next-auth/react';
+
 
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useAppDispatch();
-  const router = useRouter()
-
-  
+  const router = useRouter();
+  const  [signUp, {data}] = useSignUpMutation();
 
 const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -34,8 +31,9 @@ const formik = useFormik({
     password: Yup.string().min(6,'Password should be of minimum 8 characters length').required('Password is required'),
   }),
   onSubmit: async (values) => {
-      const { email, password, userName } = values;
-    
+    const { email, password, userName } = values;
+    signUp({ email, password, userName });
+    router.push('/signIn')
     },
 });
   
