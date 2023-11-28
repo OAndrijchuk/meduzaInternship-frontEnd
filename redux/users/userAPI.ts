@@ -1,5 +1,4 @@
 import { globalSplitApi } from '@/Api/globalApi';
-import { setUserData } from './usersSlice';
 
 export const userAPI = globalSplitApi.injectEndpoints({
     endpoints: (build) => ({
@@ -9,16 +8,6 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 method: 'POST',
                 body
             }),
-           async onQueryStarted(id, { dispatch, queryFulfilled }) {
-                    console.log("Loading...");
-                try {
-                    const { data } = await queryFulfilled
-                    
-                    dispatch(setUserData(data))
-                } catch (err) {
-                    console.log(err);
-                }
-            },
         }),
         signUp: build.mutation({
             query: (body) => ({
@@ -26,13 +15,30 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 method: 'POST',
                 body
             }),
-            transformResponse: response => {
-                console.log('transform', response);
-                return response;
-            },
+        }),
+        getProfile: build.query({
+            query: () => ({
+                url: 'auth/me',
+                method: 'GET',
+            }),
+            
+        }),
+        refreshToken: build.query({
+            query: () => ({
+                url: 'auth/refresh',
+                method: 'GET',
+            }),
+            
+        }),
+        logOut: build.mutation({
+            query: () => ({
+                url: 'auth/logOut',
+                method: 'POST',
+            }),
+            
         }),
     }),
     overrideExisting: false,
 });
 
-export const {useSignInMutation, useSignUpMutation } = userAPI;
+export const {useSignInMutation, useSignUpMutation, useGetProfileQuery, useRefreshTokenQuery, useLogOutMutation } = userAPI;

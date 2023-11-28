@@ -17,7 +17,7 @@ const persistConfig = {
   key: 'user',
   version: 1,
   storage,
-//   whitelist: ['token'],
+  whitelist: ['token', 'user'],
 };
 
 const authPersistedReducer = persistReducer(persistConfig, userReducer);
@@ -32,7 +32,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(userAPI.middleware,),
+    }).concat(userAPI.middleware),
     devTools: process.env.NODE_ENV !== 'production',
 })
  

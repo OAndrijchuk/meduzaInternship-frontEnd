@@ -1,7 +1,9 @@
 import { Footer } from '@/Components/Footer/Footer'
-import { Header } from '@/Components/Header/Header'
-import ReduxProvider from '../redux/ReduxProvider'
+import Providers from '../redux/ReduxProvider'
 import type { Metadata } from 'next'
+import Header2 from '@/Components/Header2/Header2'
+import Loader from '@/Components/Loader/Loader'
+
 
 export const metadata: Metadata = {
   title: 'Next App',
@@ -16,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ margin: 0 }}>
-        <ReduxProvider>
-          <Header />
+        <Providers>
+          <Header2 />
           {children}
           <Footer />
-        </ReduxProvider>
-      </body>
+          <Loader/>
+        </Providers>
+        </body>
+     
     </html>
   )
 }
