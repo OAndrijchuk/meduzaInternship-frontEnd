@@ -1,5 +1,4 @@
 import { RootState } from '@/redux/store';
-import { setIsLoading } from '@/redux/users/usersSlice';
 import { createApi, fetchBaseQuery, BaseQueryFn } from '@reduxjs/toolkit/query/react';
 
 

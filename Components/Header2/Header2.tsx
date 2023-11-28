@@ -16,7 +16,6 @@ import { useDispatch } from 'react-redux';
 import { setUserData, setUserToken } from '@/redux/users/usersSlice';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getUserToken } from '@/redux/users/selectors';
-import { Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/hooks/redux';
 
@@ -52,8 +51,7 @@ function Header2() {
             dispatch(setUserData({ email, userName: name }));
         }
      } catch (error) {
-      console.log(error);
-      
+         
      } 
   }
 useEffect(() => {
