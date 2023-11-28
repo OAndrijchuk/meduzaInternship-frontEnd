@@ -10,8 +10,6 @@ export default function Users() {
   const router = useRouter()
   const isAuth = useAppSelector(getUserToken)
 
-
-  
   useEffect(() => {
     if (!isAuth) {
       router.push('/signIn');

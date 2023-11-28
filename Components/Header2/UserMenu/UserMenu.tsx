@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useDispatch } from 'react-redux';
 import { setUserData, setUserToken } from '@/redux/users/usersSlice';
 import { useRouter } from 'next/navigation';
+import { useLogOutMutation } from '@/redux/users/userAPI';
 
 const settings = [
   { label: 'Profile', path: '/me' },
@@ -13,6 +14,7 @@ const settings = [
 const UserMenu = () => {
   const route = useRouter();
   const dispatch = useDispatch();
+  const [credLogOut,{data: dataLogOutMessage}] = useLogOutMutation();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const { logout } = useAuth0();
     
@@ -22,9 +24,10 @@ const UserMenu = () => {
     
   const handleCloseUserMenu = ( path:string ) => {
     if (path === '/') {
+      logout();
+      credLogOut({});
       dispatch(setUserData({}));
       dispatch(setUserToken(''));
-      logout();
     }
     if (path === '/me') {
       route.push('/me')

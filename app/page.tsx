@@ -9,8 +9,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { setUserToken } from '@/redux/users/usersSlice';
 import { useRefreshTokenQuery } from '@/redux/users/userAPI';
 
-
-
 type Props = {
   searchParams: Record<string, string> | null | undefined;
 };

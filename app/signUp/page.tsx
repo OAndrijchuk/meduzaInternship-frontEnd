@@ -18,7 +18,6 @@ export default async function SignUp() {
       }}>
         <SignUpForm />
       </Paper>
-
     </ContainerStyled>
   )
 }

@@ -69,7 +69,7 @@ useEffect(() => {
     const handleCloseNavMenu = (link = '') => {
         switch (link) {
             case "/about":
-                router.push("/companies")
+                router.push("/about")
                 break;
             case "/users":
                 if(isAuth){router.push("/users")}else{router.push("/signIn")}

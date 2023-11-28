@@ -1,8 +1,5 @@
 import { RootState } from '@/redux/store';
-import { useRefreshTokenQuery } from '@/redux/users/userAPI';
 import { createApi, fetchBaseQuery, BaseQueryFn } from '@reduxjs/toolkit/query/react';
-
-
 
 
 export const globalSplitApi = createApi({
@@ -14,7 +11,8 @@ export const globalSplitApi = createApi({
         try {
         if (!response.ok) {
           if (response.status === 401) {
-            console.log("тут потрібно зробити запит на рефреш токен");
+            const res = await globalSplitApi.endpoints.refreshToken.query();
+            // return response.json();
           }
 
           const error = await response.json();
