@@ -7,6 +7,7 @@ interface UsersState {
     token: string;
     isAuth: boolean;
     isLoading: boolean;
+    allUsers: Array<IUser>;
 };
 
 const initialState: UsersState = {
@@ -14,8 +15,10 @@ const initialState: UsersState = {
         userName: '',
         id: 0,
         email: '',
-        isVerify: false
+        isVerify: false,
+        avatar:'',
     },
+    allUsers:[],
     token: '',
     isAuth: false,
     isLoading:false,
@@ -44,17 +47,18 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addMatcher(
+    .addMatcher(
       globalSplitApi.endpoints.signIn.matchFulfilled,
         (state, { payload }) => {
             state.user = payload.user
             state.token = payload.token
       }
     )
-        .addMatcher(
+    .addMatcher(
          isAnyOf(
             globalSplitApi.endpoints.refreshToken.matchRejected,
-            globalSplitApi.endpoints.logOut.matchFulfilled,),
+            globalSplitApi.endpoints.logOut.matchFulfilled,
+            globalSplitApi.endpoints.removeAccount.matchFulfilled,),
         (state, { payload }) => {
             state.user = initialState.user
             state.token = ''
@@ -67,12 +71,22 @@ const userSlice = createSlice({
       }
     )
     .addMatcher(
+       globalSplitApi.endpoints.getAllUsers.matchFulfilled,
+        (state, { payload }) => {
+            state.allUsers = payload
+      }
+    )
+    .addMatcher(
          isAnyOf(
             globalSplitApi.endpoints.getProfile.matchPending,
             globalSplitApi.endpoints.refreshToken.matchPending,
             globalSplitApi.endpoints.logOut.matchPending,
             globalSplitApi.endpoints.signUp.matchPending,
-            globalSplitApi.endpoints.signIn.matchPending),
+            globalSplitApi.endpoints.signIn.matchPending,
+            globalSplitApi.endpoints.getUserInfo.matchPending,
+            globalSplitApi.endpoints.removeAccount.matchPending,
+            globalSplitApi.endpoints.updateUserInfo.matchPending,
+            globalSplitApi.endpoints.getAllUsers.matchPending,),
         (state, { payload }) => {
             state.isLoading = true
       }
@@ -83,6 +97,10 @@ const userSlice = createSlice({
             globalSplitApi.endpoints.refreshToken.matchFulfilled,
             globalSplitApi.endpoints.logOut.matchFulfilled,
             globalSplitApi.endpoints.signUp.matchFulfilled,
+            globalSplitApi.endpoints.getAllUsers.matchFulfilled,
+            globalSplitApi.endpoints.getUserInfo.matchFulfilled,
+            globalSplitApi.endpoints.removeAccount.matchFulfilled,
+            globalSplitApi.endpoints.updateUserInfo.matchFulfilled,
             globalSplitApi.endpoints.signIn.matchFulfilled,),
         (state, { payload }) => {
             state.isLoading = false
@@ -94,6 +112,10 @@ const userSlice = createSlice({
             globalSplitApi.endpoints.refreshToken.matchRejected,
             globalSplitApi.endpoints.logOut.matchRejected,
             globalSplitApi.endpoints.signUp.matchRejected,
+            globalSplitApi.endpoints.getAllUsers.matchRejected,
+            globalSplitApi.endpoints.getUserInfo.matchRejected,
+            globalSplitApi.endpoints.removeAccount.matchRejected,
+            globalSplitApi.endpoints.updateUserInfo.matchRejected,
             globalSplitApi.endpoints.signIn.matchRejected,),
         (state, { payload }) => {
             state.isLoading = false

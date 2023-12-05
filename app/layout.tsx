@@ -3,6 +3,7 @@ import Providers from '../redux/ReduxProvider'
 import type { Metadata } from 'next'
 import Header2 from '@/Components/Header2/Header2'
 import Loader from '@/Components/Loader/Loader'
+import { MainStyled } from './HomePage.styled'
 
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ export default function RootLayout({
       <body style={{ margin: 0 }}>
         <Providers>
           <Header2 />
-          {children}
+          <MainStyled>
+            {children}
+          </MainStyled>
           <Footer />
           <Loader/>
         </Providers>
