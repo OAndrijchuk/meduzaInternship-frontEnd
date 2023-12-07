@@ -4,7 +4,6 @@ import { getUserToken } from '@/redux/users/selectors';
 import { useGetProfileQuery, useRemoveAccountMutation, useUpdateUserInfoMutation } from '@/redux/users/userAPI';
 import React, { useEffect, useState } from 'react'
 import { useRouter } from "next/navigation";
-import { useDispatch } from 'react-redux';
 import { ButtonsContainer, FormStyled, UserInfoContainer } from './me.styled';
 import { Avatar, Fab, FormControl, TextField, Tooltip, Typography } from '@mui/material';
 import { Clear, Done, Edit, Delete } from '@mui/icons-material';
@@ -15,12 +14,11 @@ import PasswordField from '@/Components/PasswordField/PasswordField';
 
 export default function Profile() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const isAuth = useAppSelector(getUserToken);
   const [readOnly, setReadOnly] = useState(true);
-  const { data: user, isError, isFetching, isSuccess, refetch } = useGetProfileQuery({});
-  const [removeMe, { data }] = useRemoveAccountMutation();
-  const [updateMe, { data:newMe }] = useUpdateUserInfoMutation();
+  const { data: user, isError,  isSuccess } = useGetProfileQuery({});
+  const [removeMe, { }] = useRemoveAccountMutation();
+  const [updateMe, { }] = useUpdateUserInfoMutation();
 
 
   useEffect(() => {
@@ -36,7 +34,8 @@ export default function Profile() {
     formik.handleSubmit();
   }
   const removeProfile = async () => {
-    await removeMe({})
+    await removeMe({});
+
   }
  
   const formik = useFormik({
@@ -46,6 +45,7 @@ export default function Profile() {
     newPassword: Yup.string().min(6,'Password should be of minimum 6 characters length'),
     newPasswordConfirm: Yup.string().min(6,'Password should be of minimum 6 characters length'),
   }),
+
   onSubmit: async (values, { resetForm }) => {
     const { newPassword, userName, newPasswordConfirm } = values;
     if (!newPassword && (!userName || userName === user.userName)) {
@@ -60,10 +60,12 @@ export default function Profile() {
     let newOptions = {}
     if (userName) newOptions.userName = userName
     if (newPassword) newOptions.password = newPassword
-    console.log(newOptions);
     
-    await updateMe(newOptions)
-    resetForm();
+    updateMe(newOptions).then(rez => {
+      resetForm();
+      setReadOnly(true)
+    }).catch((err)=>console.log(err))
+    
     },
   });
   
@@ -137,3 +139,4 @@ export default function Profile() {
     
   )
 }
+

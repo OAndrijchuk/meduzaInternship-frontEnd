@@ -22,7 +22,6 @@ type Props = {
       <Typography component='p'>{data?.email}</Typography>
       <Typography component='p' sx={{display: 'flex', alignItems:'bottom', gap:'20px'}}>Verification account {data?.isVerify?<Done color='success'/>:<Clear color='error'/>}</Typography>
       </UserInfoContainer>
-      {/* <MockComponent/> */}
     </div>
   )
  }

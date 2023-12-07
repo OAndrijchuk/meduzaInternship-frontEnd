@@ -43,7 +43,6 @@ const userSlice = createSlice({
             state.isLoading = payload;
 
         }
-        
     },
     extraReducers: (builder) => {
         builder
@@ -75,51 +74,6 @@ const userSlice = createSlice({
         (state, { payload }) => {
             state.allUsers = payload
       }
-    )
-    .addMatcher(
-         isAnyOf(
-            globalSplitApi.endpoints.getProfile.matchPending,
-            globalSplitApi.endpoints.refreshToken.matchPending,
-            globalSplitApi.endpoints.logOut.matchPending,
-            globalSplitApi.endpoints.signUp.matchPending,
-            globalSplitApi.endpoints.signIn.matchPending,
-            globalSplitApi.endpoints.getUserInfo.matchPending,
-            globalSplitApi.endpoints.removeAccount.matchPending,
-            globalSplitApi.endpoints.updateUserInfo.matchPending,
-            globalSplitApi.endpoints.getAllUsers.matchPending,),
-        (state, { payload }) => {
-            state.isLoading = true
-      }
-    )
-    .addMatcher(
-        isAnyOf(
-            globalSplitApi.endpoints.getProfile.matchFulfilled,
-            globalSplitApi.endpoints.refreshToken.matchFulfilled,
-            globalSplitApi.endpoints.logOut.matchFulfilled,
-            globalSplitApi.endpoints.signUp.matchFulfilled,
-            globalSplitApi.endpoints.getAllUsers.matchFulfilled,
-            globalSplitApi.endpoints.getUserInfo.matchFulfilled,
-            globalSplitApi.endpoints.removeAccount.matchFulfilled,
-            globalSplitApi.endpoints.updateUserInfo.matchFulfilled,
-            globalSplitApi.endpoints.signIn.matchFulfilled,),
-        (state, { payload }) => {
-            state.isLoading = false
-        }
-    )
-    .addMatcher(
-        isAnyOf(
-            globalSplitApi.endpoints.getProfile.matchRejected,
-            globalSplitApi.endpoints.refreshToken.matchRejected,
-            globalSplitApi.endpoints.logOut.matchRejected,
-            globalSplitApi.endpoints.signUp.matchRejected,
-            globalSplitApi.endpoints.getAllUsers.matchRejected,
-            globalSplitApi.endpoints.getUserInfo.matchRejected,
-            globalSplitApi.endpoints.removeAccount.matchRejected,
-            globalSplitApi.endpoints.updateUserInfo.matchRejected,
-            globalSplitApi.endpoints.signIn.matchRejected,),
-        (state, { payload }) => {
-            state.isLoading = false
-        }
     )
   }
 });

@@ -10,6 +10,7 @@ import { useSignUpMutation } from '@/redux/users/userAPI';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/hooks/redux';
 import ShowPasswordBtn from '../ShowPasswordBtn/ShowPasswordBtn';
+import PasswordField from '../PasswordField/PasswordField';
 
 
 
@@ -86,23 +87,7 @@ return (
           }}  
         />
       </FormControl>
-      <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
-        <TextField
-          id="standard-adornment-password"
-          type={showPassword ? 'text' : 'password'}
-          name='password'
-          label="Password"
-          variant="standard"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-          InputProps={{
-            endAdornment: <ShowPasswordBtn handleClick={handleClickShowPassword } isPasswordShow={showPassword} />
-          }}
-        />
-      </FormControl>
+       <PasswordField id="password" label="Password" formik={formik} />
       <Button variant="contained" type="submit" sx={{ width: '100%' }} size='large'>Sign Up</Button>
     </Box>
   </>

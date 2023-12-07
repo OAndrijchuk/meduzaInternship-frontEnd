@@ -21,6 +21,7 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 url: 'auth/me',
                 method: 'GET',
             }),
+            providesTags:['user'],
             
         }),
         refreshToken: build.query({
@@ -64,7 +65,7 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 method: 'PUT',
                 body:body,
             }),
-            
+            invalidatesTags:['user'],
         }),
     }),
     overrideExisting: false,

@@ -12,6 +12,7 @@ PERSIST,
 PURGE,
 REGISTER, } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
+import { loading } from "./middlewares";
 
 const persistConfig = {
   key: 'user',
@@ -32,10 +33,12 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(userAPI.middleware),
+    }).concat(userAPI.middleware, loading),
     devTools: process.env.NODE_ENV !== 'production',
 })
  
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+
