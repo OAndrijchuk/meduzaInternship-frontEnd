@@ -7,6 +7,7 @@ interface UsersState {
     token: string;
     isAuth: boolean;
     isLoading: boolean;
+    allUsers: Array<IUser>;
 };
 
 const initialState: UsersState = {
@@ -14,8 +15,10 @@ const initialState: UsersState = {
         userName: '',
         id: 0,
         email: '',
-        isVerify: false
+        isVerify: false,
+        avatar:'',
     },
+    allUsers:[],
     token: '',
     isAuth: false,
     isLoading:false,
@@ -40,21 +43,21 @@ const userSlice = createSlice({
             state.isLoading = payload;
 
         }
-        
     },
     extraReducers: (builder) => {
         builder
-            .addMatcher(
+    .addMatcher(
       globalSplitApi.endpoints.signIn.matchFulfilled,
         (state, { payload }) => {
             state.user = payload.user
             state.token = payload.token
       }
     )
-        .addMatcher(
+    .addMatcher(
          isAnyOf(
             globalSplitApi.endpoints.refreshToken.matchRejected,
-            globalSplitApi.endpoints.logOut.matchFulfilled,),
+            globalSplitApi.endpoints.logOut.matchFulfilled,
+            globalSplitApi.endpoints.removeAccount.matchFulfilled,),
         (state, { payload }) => {
             state.user = initialState.user
             state.token = ''
@@ -67,37 +70,10 @@ const userSlice = createSlice({
       }
     )
     .addMatcher(
-         isAnyOf(
-            globalSplitApi.endpoints.getProfile.matchPending,
-            globalSplitApi.endpoints.refreshToken.matchPending,
-            globalSplitApi.endpoints.logOut.matchPending,
-            globalSplitApi.endpoints.signUp.matchPending,
-            globalSplitApi.endpoints.signIn.matchPending),
+       globalSplitApi.endpoints.getAllUsers.matchFulfilled,
         (state, { payload }) => {
-            state.isLoading = true
+            state.allUsers = payload
       }
-    )
-    .addMatcher(
-        isAnyOf(
-            globalSplitApi.endpoints.getProfile.matchFulfilled,
-            globalSplitApi.endpoints.refreshToken.matchFulfilled,
-            globalSplitApi.endpoints.logOut.matchFulfilled,
-            globalSplitApi.endpoints.signUp.matchFulfilled,
-            globalSplitApi.endpoints.signIn.matchFulfilled,),
-        (state, { payload }) => {
-            state.isLoading = false
-        }
-    )
-    .addMatcher(
-        isAnyOf(
-            globalSplitApi.endpoints.getProfile.matchRejected,
-            globalSplitApi.endpoints.refreshToken.matchRejected,
-            globalSplitApi.endpoints.logOut.matchRejected,
-            globalSplitApi.endpoints.signUp.matchRejected,
-            globalSplitApi.endpoints.signIn.matchRejected,),
-        (state, { payload }) => {
-            state.isLoading = false
-        }
     )
   }
 });

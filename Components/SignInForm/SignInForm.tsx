@@ -1,26 +1,19 @@
 "use client"
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { MailOutline } from '@mui/icons-material';
-import { Box, Button, Paper, TextField, Typography} from '@mui/material';
+import { Box, Button, TextField, Typography} from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useSignInMutation } from '@/redux/users/userAPI';
 import { useRouter } from 'next/navigation';
 import { useAuth0 } from "@auth0/auth0-react";
-import { setUserData, setUserToken } from '@/redux/users/usersSlice';
-import { useAppDispatch } from '@/hooks/redux';
-import { signIn } from 'next-auth/react';
+import PasswordField from '../PasswordField/PasswordField';
 
 
 export default function SignInForm() {
-  const [showPassword, setShowPassword] = React.useState(false);
   const [manualSignIn, { data: manualMe, isSuccess: isSignIn }] = useSignInMutation();
-  const dispatch = useAppDispatch();
   const router = useRouter()
 const {
         isLoading:isLoad,
@@ -35,10 +28,6 @@ const {
         router.push("/")
       }
     }, [ router, isSignIn, isAuthenticated])
-  
-   
-
-const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -84,31 +73,7 @@ return (
           }}  
         />
       </FormControl>
-      <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
-        <TextField
-          id="standard-adornment-password"
-          type={showPassword ? 'text' : 'password'}
-          name='password'
-          label="Password"
-          variant="standard"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>)
-          }}
-        />
-      </FormControl>
+      <PasswordField id="password" label="Password" formik={formik} />
       <Button variant="contained" type="submit" sx={{ width: '100%' }} size='large'>Sign In</Button>
     </Box>
   </>

@@ -1,10 +1,7 @@
 "use client"
 import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { MailOutline, Person } from '@mui/icons-material';
 import { Box, Button, Paper, TextField, Typography} from '@mui/material';
 import { useFormik } from 'formik';
@@ -12,6 +9,8 @@ import * as Yup from "yup";
 import { useSignUpMutation } from '@/redux/users/userAPI';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/hooks/redux';
+import ShowPasswordBtn from '../ShowPasswordBtn/ShowPasswordBtn';
+import PasswordField from '../PasswordField/PasswordField';
 
 
 
@@ -88,31 +87,7 @@ return (
           }}  
         />
       </FormControl>
-      <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
-        <TextField
-          id="standard-adornment-password"
-          type={showPassword ? 'text' : 'password'}
-          name='password'
-          label="Password"
-          variant="standard"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>)
-          }}
-        />
-      </FormControl>
+       <PasswordField id="password" label="Password" formik={formik} />
       <Button variant="contained" type="submit" sx={{ width: '100%' }} size='large'>Sign Up</Button>
     </Box>
   </>
