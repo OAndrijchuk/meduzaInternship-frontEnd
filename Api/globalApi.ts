@@ -1,18 +1,21 @@
-import { RootState } from '@/redux/store';
+import { RootState} from '@/redux/store';
 import { createApi, fetchBaseQuery, BaseQueryFn } from '@reduxjs/toolkit/query/react';
 
+// const dispatch = store.dispatch;
 
-export const globalSplitApi = createApi({
+export const globalSplitApi:any = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL,
     credentials: 'include',
     responseHandler:
-      async (response) => {
+     async (response) => {
         if (!response.ok) {
-          if (response.status === 401) {
-            const res = await globalSplitApi.endpoints.refreshToken.query();
-          }
-          const error = await response.json();
+          // if (+response.status === 401) {
+          //   const some = await dispatch(globalSplitApi?.endpoints?.refreshToken.initiate({}))
+          //   console.log('some===>>>',some);
+          //   return response.json();
+          // }
+          const error:any = response.json();
           throw new Error(error.message || 'Something went wrong');
         }
           return response.json();
@@ -28,7 +31,7 @@ export const globalSplitApi = createApi({
   
   }),
     reducerPath: 'GlobalAPI',
-    tagTypes:['user'],
+    tagTypes:['user', 'company'],
   endpoints: () => ({}),
 })
 

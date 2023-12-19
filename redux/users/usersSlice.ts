@@ -8,6 +8,7 @@ interface UsersState {
     isAuth: boolean;
     isLoading: boolean;
     allUsers: Array<IUser>;
+    isAuthRefresh: boolean;
 };
 
 const initialState: UsersState = {
@@ -21,6 +22,7 @@ const initialState: UsersState = {
     allUsers:[],
     token: '',
     isAuth: false,
+    isAuthRefresh: false,
     isLoading:false,
 };
 
@@ -37,6 +39,10 @@ const userSlice = createSlice({
         },
         setIsAuth: (state, { payload }) => {
             state.isAuth = payload;
+
+        },
+        setIsAuthRefresh: (state, { payload }) => {
+            state.isAuthRefresh = payload;
 
         },
         setIsLoading: (state, { payload }) => {
@@ -61,12 +67,14 @@ const userSlice = createSlice({
         (state, { payload }) => {
             state.user = initialState.user
             state.token = ''
+            state.isAuthRefresh=false
       }
     )
     .addMatcher(
        globalSplitApi.endpoints.refreshToken.matchFulfilled,
         (state, { payload }) => {
             state.token = payload.token
+            state.isAuthRefresh=false
       }
     )
     .addMatcher(
@@ -79,5 +87,5 @@ const userSlice = createSlice({
 });
 
 export const userReducer = userSlice.reducer;
-export const { setUserData, setUserToken, setIsAuth, setIsLoading } = userSlice.actions;
+export const { setUserData, setUserToken, setIsAuth, setIsLoading, setIsAuthRefresh } = userSlice.actions;
 

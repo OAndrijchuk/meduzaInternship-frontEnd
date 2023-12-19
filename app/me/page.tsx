@@ -1,31 +1,20 @@
 'use client'
-import { useAppSelector } from '@/hooks/redux';
-import { getUserToken } from '@/redux/users/selectors';
 import { useGetProfileQuery, useRemoveAccountMutation, useUpdateUserInfoMutation } from '@/redux/users/userAPI';
-import React, { useEffect, useState } from 'react'
-import { useRouter } from "next/navigation";
+import React, { useState } from 'react'
 import { ButtonsContainer, FormStyled, UserInfoContainer } from './me.styled';
-import { Avatar, Fab, FormControl, TextField, Tooltip, Typography } from '@mui/material';
+import { Avatar, FormControl, TextField, Typography } from '@mui/material';
 import { Clear, Done, Edit, Delete } from '@mui/icons-material';
 import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import PasswordField from '@/Components/PasswordField/PasswordField';
+import FAButton from '@/Components/FAButton/FAButton';
 
 export default function Profile() {
-  const router = useRouter();
-  const isAuth = useAppSelector(getUserToken);
   const [readOnly, setReadOnly] = useState(true);
   const { data: user, isError,  isSuccess } = useGetProfileQuery({});
   const [removeMe, { }] = useRemoveAccountMutation();
   const [updateMe, { }] = useUpdateUserInfoMutation();
-
-
-  useEffect(() => {
-    if (!isAuth) {
-      router.push('/signIn');
-    }
-  }, [isAuth]);
 
   const changeSettings = () => {
     setReadOnly(false)
@@ -114,23 +103,12 @@ export default function Profile() {
             Verification account {user?.isVerify ? <Done color='success' /> : <Clear color='error' />}
           </Typography>
       </FormStyled>
-      <ButtonsContainer>
-        <Tooltip title="Remove account" placement="left-start" arrow>
-          <Fab color="error" aria-label="add" sx={{marginLeft:'auto'}} onClick={removeProfile}>
-            <Delete />
-          </Fab>
-        </Tooltip>
-        {readOnly
-          ? <Tooltip title="Change settings" placement="left-start" arrow>
-              <Fab color="primary" aria-label="edit" sx={{marginLeft:'auto'}} onClick={changeSettings}>
-                <Edit />
-              </Fab>
-            </Tooltip>
-          : <Tooltip title="Save changes" placement="left-start" arrow>
-              <Fab color="primary" aria-label="save" sx={{marginLeft:'auto'}} onClick={saveChanges}>
-                <SendAndArchiveIcon />
-              </Fab>
-            </Tooltip>}
+        <ButtonsContainer>
+          <FAButton onClick={removeProfile} icon={<Delete />} helpText='Remove account' colorBG='error'/>
+          {readOnly
+            ? <FAButton onClick={changeSettings} icon={<Edit />} helpText='Change settings'/>
+            : <FAButton onClick={saveChanges} icon={<SendAndArchiveIcon />} helpText='Save changes'/>
+          }
         
       </ButtonsContainer>
       </UserInfoContainer>

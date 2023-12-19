@@ -12,7 +12,8 @@ PERSIST,
 PURGE,
 REGISTER, } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
-import { loading } from "./middlewares";
+import { loading, refreshAuth } from "./middlewares";
+import { companiesReducer } from "./companies/companiesSlice";
 
 const persistConfig = {
   key: 'user',
@@ -28,12 +29,13 @@ export const store = configureStore({
         
         [userAPI.reducerPath]:userAPI.reducer,
         user: authPersistedReducer,
+        companies:companiesReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(userAPI.middleware, loading),
+    }).concat(userAPI.middleware, loading, refreshAuth),
     devTools: process.env.NODE_ENV !== 'production',
 })
  

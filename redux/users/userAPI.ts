@@ -71,4 +71,4 @@ export const userAPI = globalSplitApi.injectEndpoints({
     overrideExisting: false,
 });
 
-export const {useSignInMutation, useSignUpMutation, useGetProfileQuery, useRefreshTokenQuery, useLogOutMutation, useGetAllUsersQuery, useGetUserInfoQuery, useRemoveAccountMutation, useUpdateUserInfoMutation } = userAPI;
+export const {useSignInMutation, useSignUpMutation, useGetProfileQuery, useRefreshTokenQuery, useLazyRefreshTokenQuery, useLogOutMutation, useGetAllUsersQuery, useGetUserInfoQuery, useRemoveAccountMutation, useUpdateUserInfoMutation } = userAPI;

@@ -70,10 +70,10 @@ useEffect(() => {
                 router.push("/about")
                 break;
             case "/users":
-                if(isAuth){router.push("/users")}else{router.push("/signIn")}
+                router.push("/users")
                 break;
             case "/companies":
-                if(isAuth){router.push("/companies")}else{router.push("/signIn")}
+                router.push("/companies")
                 break;
         
             default:

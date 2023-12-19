@@ -1,7 +1,6 @@
 'use client'
 import * as React from 'react';
-import { ModalCont, ModalOverlay } from './TheModal.styled';
-import { Button } from '@mui/material';
+import { CloseModalBtn, ModalCont, ModalOverlay } from './TheModal.styled';
 import { useRouter } from 'next/navigation';
 
 type Props={
@@ -32,7 +31,7 @@ export default function TheModal({children}: Props) {
       }}>
         <ModalCont>
           {children}
-          <Button type='button' onClick={router.back}>Close</Button>
+          <CloseModalBtn  size='large' type='button' onClick={router.back}>Close</CloseModalBtn>
         </ModalCont>
          
       </ModalOverlay>

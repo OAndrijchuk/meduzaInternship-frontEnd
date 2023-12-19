@@ -7,7 +7,7 @@ import { IUser } from '@/Types/IUser';
 import { useRouter } from 'next/navigation';
 
 
-const UsersList = ({ data = [] }: { data: [IUser] }) => {
+const UsersList = ({ data = [] }: { data: Array<IUser> }) => {
   const route = useRouter();
   return (
     <Box>
@@ -16,7 +16,9 @@ const UsersList = ({ data = [] }: { data: [IUser] }) => {
           <Item key={id}>
             <Avatar alt={userName} src={avatar} />
             <Box>
-              <UserNameLink onClick={()=>route.push(`users/${id}`)} >{userName}</UserNameLink>
+              <UserNameLink
+                onClick={() => route.push(`/users/${id}`)}
+              >{userName}</UserNameLink>
               <Typography component="p">{email}</Typography>
             </Box>
           </Item>))}
