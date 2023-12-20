@@ -7,10 +7,9 @@ const refreshAuth: Middleware =  (store: MiddlewareAPI) => (next: Dispatch) => a
     
     if (action?.payload?.originalStatus === 401) {
        try {
-      const some = await store.dispatch(globalSplitApi.endpoints.refreshToken.initiate({}));
-      // const rez = await store.dispatch(globalSplitApi.endpoints[action.meta.arg.endpointName].initiate({}));
-    console.log('some===>>>', some);
-    console.log('action===>>>', action);
+      // const some = await store.dispatch(globalSplitApi.endpoints.refreshToken.initiate({}));
+      // store.dispatch(setIsAuthRefresh(true));
+      console.log('action===>>>', action);
 
     //   return refreshAuth(store)(next)(action);
     } catch (error) {

@@ -3,9 +3,9 @@ import type { NextRequest } from 'next/server';
 
  function myMiddleware(request: NextRequest) {
      // Your Middleware logic here
-     const response = NextResponse.next()
-     if (response.status === 400) {
-        console.log(response);
+    const response = NextResponse.next()
+     if (response.status === 401) {
+      //   console.log('response===>>>',response);
      }
     
     
