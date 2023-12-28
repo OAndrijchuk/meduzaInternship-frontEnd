@@ -20,20 +20,14 @@ export default function Companies({searchParams}:Props) {
   const [companyAction, setCompanyAction] = useState<string>('')
   const [companyId, setCompanyId] = useState<null | number>(null)
 
-// console.log('companies===>>>', data);
-
-
   const addCompany = () => {
     setCompanyAction('createCompany');
     router.push("companies?modal=true")
-    
   }
   const createRequest = async ({id}:{id: number}) => {
-    console.log(id);
     Promise.all([setCompanyId(id), setCompanyAction('createRequest')]);
     router.push("companies?modal=true")
   }
-
   const showModal = searchParams?.modal;
 
   return (

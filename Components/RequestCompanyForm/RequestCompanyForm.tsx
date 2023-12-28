@@ -17,8 +17,7 @@ const RequestCompanyForm = ({ companyId }: Props) => {
     const { data: company, isSuccess } = useGetCompanyInfoQuery(companyId)
     const [createRequest, {}]  = useAddRequestMutation()
     const user = useAppSelector(getUser)
-    console.log('user===>>>',user);
-    console.log('company===>>>',company);
+
     const isInEmployee = company?.employee.some((maker:any)=>maker.userId.id===user.id)
     const isInInvitations = company?.invitations.some((invite:any)=>invite.user.id===user.id)
     const isInCandidates = company?.candidates.some((request:any)=>request.user.id===user.id)

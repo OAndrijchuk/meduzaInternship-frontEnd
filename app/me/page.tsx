@@ -12,6 +12,8 @@ import InviteAndRequestList from '@/Components/Invite&RequestList/InviteAndReque
 import CompaniesList from '@/Components/CompaniesList/CompaniesList';
 import { useUpdateInviteMutation } from '@/redux/companies/invitesAPI';
 import { ActionType } from '@/Types';
+import { useRemoveRequestMutation } from '@/redux/users/requestsUser';
+import { useRemoveMemberMutation } from '@/redux/companies/companiesAPI';
 
 type updateUserData = {
   userName?: string
@@ -25,9 +27,8 @@ export default function Profile() {
   const [removeMe, { }] = useRemoveAccountMutation();
   const [updateMe, { }] = useUpdateUserInfoMutation();
   const [updateInvite, {}] = useUpdateInviteMutation();
-
-// console.log('user===>>>',user);
-
+  const [removeRequestById, {}] = useRemoveRequestMutation();
+  const [removeMemberById, {}] = useRemoveMemberMutation();
 
   const saveChanges = () => {
     formik.handleSubmit();
@@ -35,17 +36,20 @@ export default function Profile() {
   const removeProfile = async () => {
     await removeMe({});
   }
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
   const acceptOffer = async ({ userId, id, companyId}:{ userId:number, id:number, companyId:number}) => {
     await updateInvite({values:{status:"fulfilled"}, companyId, inviteId:id})
   }
-
   const rejectOffer = async ({ userId, id, companyId}:{ userId:number, id:number, companyId:number}) => {
      await updateInvite({values:{status:"rejected"}, companyId, inviteId:id})
+  }
+  const removeRequest = async ({ id }:{  id:number}) => {
+     await removeRequestById({id})
+  }
+  const removeMember = async ({ id }: { id: number }) => {
+     await removeMemberById({body:{memberId:user.id}, id})
   }
  
   const formik = useFormik({
@@ -138,9 +142,9 @@ export default function Profile() {
             {+value === 0 &&
               <CompaniesList
                 data={user.myWork.map((work:any)=>work.companyId)}
-                actionButtons={{remove:() => { }}}
+                actionButtons={{remove:removeMember}}
               />}
-            {+value === 1 && <InviteAndRequestList data={user.candidates} type={ActionType.request} actionButtons={{remove:() => { }}}/> }
+          {+value === 1 && <InviteAndRequestList data={user.candidates} type={ActionType.request} actionButtons={{ remove: removeRequest}}/> }
             {+value === 2 && <InviteAndRequestList data={user.offers} actionButtons={{ accept:acceptOffer, reject:rejectOffer}} />}
         </Box>
         <ControlButtons remove={removeProfile} edit={() => setReadOnly(false)} saveChanges={saveChanges} isEdit={readOnly} />

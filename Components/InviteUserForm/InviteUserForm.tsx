@@ -25,14 +25,13 @@ const InviteUserForm = ({ userId }: Props) => {
     const sendInvite = async () => {
         try {
             if (!value) {
-            alert("Виберіть компанію. Поле Company не може бути порожнім");
-            return;
+                alert("Виберіть компанію. Поле Company не може бути порожнім");
+                return;
             }
             const rezObj = {
                 companyId:value.id,
                 userId,
             }
-            console.log(rezObj);
             await createInvite(rezObj)
             router.push(pathname)
         } catch (error: any) {

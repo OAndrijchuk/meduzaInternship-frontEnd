@@ -7,7 +7,7 @@ export const companiesAPI = globalSplitApi.injectEndpoints({
                 url: 'company',
                 method: 'GET',
             }),
-            providesTags:['company', 'addInvite', 'removeInvite', 'updateInvite'],
+            providesTags:['company', 'addInvite', 'removeInvite', 'updateInvite', 'removeMember'],
             
         }),
         addCompany: build.mutation({
@@ -23,7 +23,7 @@ export const companiesAPI = globalSplitApi.injectEndpoints({
                 url: `company/${id}`,
                 method: 'GET',
             }),
-            providesTags:['companyInfo', 'removeInvite', 'addInvite', 'updateInvite'],
+            providesTags:['companyInfo', 'removeInvite', 'addInvite', 'updateInvite', 'removeMember'],
             
         }),
         removeCompany: build.mutation({
@@ -39,7 +39,7 @@ export const companiesAPI = globalSplitApi.injectEndpoints({
                 method: 'DELETE',
                 body,
             }),
-            invalidatesTags:['companyInfo'],
+            invalidatesTags:['removeMember'],
         }),
         updateCompanyInfo: build.mutation({
             query: ({values, companyId}) => ({

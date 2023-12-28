@@ -16,6 +16,7 @@ import CustomInput from "@/Components/CustomInput/CustomInput";
 import { useRouter } from "next/navigation";
 import { useRemoveInviteMutation } from "@/redux/companies/invitesAPI";
 import { ActionType } from "@/Types";
+import { useUpdateRequestMutation } from "@/redux/users/requestsUser";
 
 type Props = {
   params: {
@@ -35,11 +36,11 @@ export default function CompanyProfile({ params: { companyId } }: Props) {
   const [removeCompanyById, {}] = useRemoveCompanyMutation();
   const [removeInviteById, {}] = useRemoveInviteMutation();
   const [removeMemberById, {}] = useRemoveMemberMutation();
-  
+  const [updateRequestById, {}] = useUpdateRequestMutation();
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
   const removeCompany = async () => {
     await removeCompanyById(companyId)
     route.push('/companies')
@@ -52,7 +53,14 @@ export default function CompanyProfile({ params: { companyId } }: Props) {
     { id }: { id: number }) => {
     await removeMemberById({body:{memberId:id}, id:companyId})
   }
-
+  const acceptRequest = async (
+    { id }: { id: number }) => {
+    await updateRequestById({body:{status:'fulfilled'}, id})
+  }
+  const rejectedRequest = async (
+    { id }: { id: number }) => {
+    await updateRequestById({body:{status:'rejected'}, id})
+  }
 
   const formik = useFormik({
     initialValues:{ companyName: data?.companyName, description: data?.description },
@@ -73,11 +81,9 @@ export default function CompanyProfile({ params: { companyId } }: Props) {
       } catch (error) {
         console.log(error);
       }
-     
     },
   });
 
- 
   if (isSuccess && !formik.values.companyName && !formik.values.description) {
     formik.values.companyName = data?.companyName;
     formik.values.description = data?.description;
@@ -101,35 +107,10 @@ export default function CompanyProfile({ params: { companyId } }: Props) {
           </Box>
             {+value === 0 && <UsersList data={employee} actionButtons={ isOwner?{remove:removeMember}:{} } />}
             {+value === 1 && <InviteAndRequestList data={data.invitations} actionButtons={{ remove: removeInvite }} />}
-            {+value === 2 && <InviteAndRequestList data={data.candidates} type={ActionType.request} actionButtons={{ accept:()=>{} ,reject:() => {} }}/>}
+            {+value === 2 && <InviteAndRequestList data={data.candidates} type={ActionType.request} actionButtons={{ accept:acceptRequest ,reject:rejectedRequest }}/>}
         </Box>
         {isOwner && <ControlButtons remove={removeCompany} edit={()=>setReadOnly(false)} saveChanges={formik.handleSubmit} isEdit={readOnly} />}
       </CompanyContainerStyled>}
     </>
   )
 }
-// candidates
-// : 
-// []
-// companyName
-// : 
-// "OlehCompany"
-// createdAt
-// : 
-// "2023-12-13T18:59:14.110Z"
-// description
-// : 
-// "this is string from description..."
-// employee
-// : 
-// [{…}]
-// id
-// : 
-// 1
-// invitations
-// : 
-// [{…}]
-// owner: {id: 1, userName: 'MyNameOleh', email: 'andrOleh@mail.com', isVerify: false, createdAt: '2023-12-13T18:58:22.151Z', …}
-// updatedAt
-// : 
-// "2023-12-13T18:59:14.110Z"

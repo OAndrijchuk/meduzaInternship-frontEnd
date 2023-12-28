@@ -10,19 +10,19 @@ type Props = {
   };
 };
 
- function Profile({ params: { id } }: Props) {
-  const { data } = useGetUserInfoQuery(id);
-   console.log(data);
-   
+function Profile({ params: { id } }: Props) {
+
+  const { data, isSuccess } = useGetUserInfoQuery(id);
+
   return (
-    <div >
-      <UserInfoContainer>
+    <>
+      {isSuccess&&<UserInfoContainer>
         <Avatar alt={data?.userName} src={data?.avatar} sx={{width:'150px',height:'150px', alignSelf:'center'} } />
-      <Typography component='p'>{data?.userName}</Typography>
-      <Typography component='p'>{data?.email}</Typography>
-      <Typography component='p' sx={{display: 'flex', alignItems:'bottom', gap:'20px'}}>Verification account {data?.isVerify?<Done color='success'/>:<Clear color='error'/>}</Typography>
-      </UserInfoContainer>
-    </div>
+        <Typography component='p'>{data?.userName}</Typography>
+        <Typography component='p'>{data?.email}</Typography>
+        <Typography component='p' sx={{display: 'flex', alignItems:'bottom', gap:'20px'}}>Verification account {data?.isVerify?<Done color='success'/>:<Clear color='error'/>}</Typography>
+      </UserInfoContainer>}
+    </>
   )
  }
 

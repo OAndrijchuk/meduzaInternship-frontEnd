@@ -8,25 +8,25 @@ export const requestsAPI = globalSplitApi.injectEndpoints({
                 method: 'POST',
                 body,
             }),
-            // invalidatesTags:['addInvite'],
+            invalidatesTags:['addInvite'],
         }),
-        // removeInvite: build.mutation({
-        //     query: ({companyId, inviteId}) => ({
-        //         url: `company/${companyId}/invites/${inviteId}`,
-        //         method: 'DELETE',
-        //     }),
-        //     invalidatesTags:['removeInvite'],
-        // }),
-        // updateInvite: build.mutation({
-        //     query: ({values, companyId, inviteId}) => ({
-        //             url: `company/${companyId}/invites/${inviteId}`,
-        //             method: 'PATCH',
-        //             body: values,
-        //         }),
-        //     invalidatesTags:['updateInvite'],
-        // }),
+        removeRequest: build.mutation({
+            query: ({id}) => ({
+                url: `user-request/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags:['removeInvite'],
+        }),
+        updateRequest: build.mutation({
+            query: ({body, id}) => ({
+                    url: `user-request/${id}`,
+                    method: 'PATCH',
+                    body,
+                }),
+            invalidatesTags:['updateInvite'],
+        }),
     }),
     overrideExisting: false,
 });
 
-export const { useAddRequestMutation, useRemoveInviteMutation, useUpdateInviteMutation} = requestsAPI;
+export const { useAddRequestMutation, useUpdateRequestMutation, useRemoveRequestMutation} = requestsAPI;

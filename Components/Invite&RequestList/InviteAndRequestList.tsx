@@ -5,11 +5,6 @@ import React from 'react'
 import { Item, StatusStyled, UserNameLink } from './InviteAndRequestList.styled';
 import ActionButtons from '../ActionButtons/ActionButtons';
 
-// enum Types {
-//   invite = 'invite',
-//   request = 'request'
-// };
-
 interface Props {
   data: Array<IInviteOrRequest>
   type?: ActionType

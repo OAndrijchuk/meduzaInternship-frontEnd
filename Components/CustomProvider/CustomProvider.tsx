@@ -12,7 +12,6 @@ const CustomProvider = ({children}: {
     
     useEffect(() => {
       if (!isAuth) {
-          console.log('isAuth===>>>',isAuth);
           router.push('/signIn');
         }
     }, [isAuth, isAuthRefresh, router ]);
