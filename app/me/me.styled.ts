@@ -14,20 +14,16 @@ export const UserInfoContainer = styled(Paper)(() => ({
     gap:'10px',
 }));
 
-export const ButtonsContainer = styled(Box)(() => ({
-    position:"absolute",
-    display: "flex",
-    alignItems: "left",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-    gap: '15px',
-    bottom: '20px',
-    right:'20px',
-}));
 export const FormStyled = styled(Box)(() => ({
     display: "flex",
     alignItems: "left",
     justifyContent: "flex-start",
     flexDirection: "column",
+    gap: '15px',
+}));
+export const GeneralInfoStyled = styled('div')(() => ({
+    display: "flex",
+    alignItems: "left",
+    justifyContent: "flex-start",
     gap: '15px',
 }));

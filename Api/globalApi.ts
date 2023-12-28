@@ -51,7 +51,7 @@ import { createApi, fetchBaseQuery, BaseQueryFn, FetchBaseQueryError, FetchArgs 
 export const globalSplitApi:any = createApi({
   baseQuery:baseQueryWithReauth,
   reducerPath: 'GlobalAPI',
-  tagTypes:['user', 'company'],
+  tagTypes:['user', 'company', 'companyInfo', 'addInvite', 'removeInvite', 'updateInvite'],
   endpoints: () => ({}),
 })
 

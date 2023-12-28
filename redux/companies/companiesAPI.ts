@@ -7,7 +7,7 @@ export const companiesAPI = globalSplitApi.injectEndpoints({
                 url: 'company',
                 method: 'GET',
             }),
-            providesTags:['company'],
+            providesTags:['company', 'addInvite', 'removeInvite', 'updateInvite'],
             
         }),
         addCompany: build.mutation({
@@ -23,25 +23,34 @@ export const companiesAPI = globalSplitApi.injectEndpoints({
                 url: `company/${id}`,
                 method: 'GET',
             }),
+            providesTags:['companyInfo', 'removeInvite', 'addInvite', 'updateInvite'],
             
         }),
-        // removeCompany: build.mutation({
-        //     query: () => ({
-        //         url: `user`,
-        //         method: 'DELETE',
-        //     }),
-            
-        // }),
-        // updateCompanyInfo: build.mutation({
-        //     query: (body) => ({
-        //         url: `user`,
-        //         method: 'PUT',
-        //         body:body,
-        //     }),
-        //     invalidatesTags:['user'],
-        // }),
+        removeCompany: build.mutation({
+            query: (id) => ({
+                url: `company/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags:['company'],
+        }),
+        removeMember: build.mutation({
+            query: ({body,id}) => ({
+                url: `company/${id}/member`,
+                method: 'DELETE',
+                body,
+            }),
+            invalidatesTags:['companyInfo'],
+        }),
+        updateCompanyInfo: build.mutation({
+            query: ({values, companyId}) => ({
+                    url: `company/${companyId}`,
+                    method: 'PATCH',
+                    body: values,
+                }),
+            invalidatesTags:['companyInfo'],
+        }),
     }),
     overrideExisting: false,
 });
 
-export const {useGetAllCompaniesQuery, useAddCompanyMutation, useGetCompanyInfoQuery} = companiesAPI;
+export const {useGetAllCompaniesQuery, useAddCompanyMutation, useGetCompanyInfoQuery, useUpdateCompanyInfoMutation, useRemoveCompanyMutation, useRemoveMemberMutation} = companiesAPI;

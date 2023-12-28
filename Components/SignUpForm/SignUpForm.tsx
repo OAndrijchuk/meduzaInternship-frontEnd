@@ -55,7 +55,7 @@ return (
           type='text'
           name='userName'
           variant="standard"
-          label="Email"
+          label="Name"
           value={formik.values.userName}
           onChange={formik.handleChange}
           error={formik.touched.userName && Boolean(formik.errors.userName)}

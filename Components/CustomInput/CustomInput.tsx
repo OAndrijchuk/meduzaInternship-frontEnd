@@ -6,11 +6,12 @@ type passOptions = {
     label: string;
     formik: any;
     isMultiline?: boolean;
+    isReadOnly?: boolean;
     rows?:number
 }
 
 
-const CustomInput = ({id, label, formik, isMultiline=false, rows=5}: passOptions) => {
+const CustomInput = ({id, label, formik, isMultiline=false, rows=5, isReadOnly=false}: passOptions) => {
     
   return (
      <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
@@ -26,8 +27,11 @@ const CustomInput = ({id, label, formik, isMultiline=false, rows=5}: passOptions
           onChange={formik.handleChange}
           error={formik.touched[id] && Boolean(formik.errors[id])}
           helperText={formik.touched[id] && formik.errors[id]}
+          InputProps={{
+            readOnly: isReadOnly,
+          }}
         />
-          </FormControl>
+      </FormControl>
   )
 }
 

@@ -4,22 +4,28 @@ import Stack from '@mui/material/Stack';
 import { Item, UserNameLink } from './CompaniesList.styled';
 import { Avatar, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { ICompany } from '@/Types';
+import { ActionButtonsType, ICompany } from '@/Types';
+import ActionButtons from '../ActionButtons/ActionButtons';
 
+type Props = {
+  data: [ICompany]
+  actionButtons?: ActionButtonsType;
+}
 
-const CompaniesList = ({ data = [] }: { data: [ICompany] }) => {
+const CompaniesList = ({ data = [], actionButtons,  }: Props) => {
   const route = useRouter();
   return (
-    <Box >
-      <Stack component='ul' spacing={2} >
+    <Box sx={{height:'100%', overflowY:'auto'}} >
+      <Stack component='ul' spacing={2} sx={{listStyleType: "none", padding: 0}}>
         {data.map(({id, companyName, owner, employee, logo}) => (
           <Item component='li' key={id}>
             <Avatar alt={companyName} src={logo} />
             <Box>
               <UserNameLink onClick={()=>route.push(`companies/${id}`)} >{companyName}</UserNameLink>
-              <Typography component="p">{`Owner: ${owner.userName}`}</Typography>
-              <Typography component="p">{`Staff: ${employee.length}`}</Typography>
+              {owner?.userName&&<Typography component="p">{`Owner: ${owner.userName}`}</Typography>}
+              {employee&&<Typography component="p">{`Staff: ${employee.length}`}</Typography>}
             </Box>
+             <ActionButtons actions={{...actionButtons}} id={{id}} />
           </Item>))}
       </Stack>
     </Box>

@@ -21,7 +21,7 @@ const initialState: CompanyState = {
         employee: [],
     },
     allCompanies:[],
-    isLoading:false,
+    isLoading: false,
 };
 
 const companiesSlice = createSlice({

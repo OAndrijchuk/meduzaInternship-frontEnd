@@ -5,9 +5,16 @@ import { Item, UserNameLink } from './UsersList.styled';
 import { Avatar, Typography } from '@mui/material';
 import { IUser } from '@/Types/IUser';
 import { useRouter } from 'next/navigation';
+import ActionButtons from '../ActionButtons/ActionButtons';
+import { ActionButtonsType } from '@/Types';
 
 
-const UsersList = ({ data = [] }: { data: Array<IUser> }) => {
+type Props = {
+  data: Array<IUser>;
+  actionButtons?: ActionButtonsType;
+}
+
+const UsersList = ({ data = [], actionButtons }: Props) => {
   const route = useRouter();
   return (
     <Box>
@@ -21,6 +28,7 @@ const UsersList = ({ data = [] }: { data: Array<IUser> }) => {
               >{userName}</UserNameLink>
               <Typography component="p">{email}</Typography>
             </Box>
+            <ActionButtons actions={{...actionButtons}} id={{id}} />
           </Item>))}
       </Stack>
     </Box>

@@ -1,33 +1,38 @@
 "use client"
-// import MockComponent from "@/Components/MockComponent/MockComponent";
-// import { useAppSelector } from "@/hooks/redux";
-// import { getUserToken } from "@/redux/users/selectors";
-// import { useRouter } from "next/navigation";
-// import { useEffect } from "react";
+import TheModal from "@/Components/Modal/TheModal";
 import { MainStyled } from "./Users.styled";
 import UsersList from "@/Components/UsersList/UsersList";
 import { useGetAllUsersQuery } from "@/redux/users/userAPI";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import InviteUserForm from "@/Components/InviteUserForm/InviteUserForm";
 
+type Props = {
+  searchParams: Record<string, string> | null | undefined;
+};
 
-export default function Users() {
-  // const router = useRouter()
-  // const isAuth = useAppSelector(getUserToken)
-  const { data }=useGetAllUsersQuery({})
-
+export default function Users({searchParams}:Props) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const { data } = useGetAllUsersQuery({})
+  const [userId, setUserId] = useState(-1)
   
+  const inviteUser = ({id}:{id:number}) => {
+    setUserId(id)
+    router.push(`${pathname}?modal=true`)
+  }
 
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     router.push('/signIn');
-  //   }
-  // }, [isAuth]);
-  
+  const showModal = searchParams?.modal;
 
-  return (
+  return <>
     <MainStyled >
       <h1>This is Users page!!!</h1>
-      <UsersList data={ data} />
-      {/* <MockComponent/> */}
+      <UsersList data={data} actionButtons={{ add: inviteUser }} />
     </MainStyled>
-  )
+    {showModal &&
+      <TheModal>
+        <InviteUserForm userId={ userId } />
+      </TheModal>}
+    </>
+  
 }

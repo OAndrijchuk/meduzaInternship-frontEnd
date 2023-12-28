@@ -1,6 +1,6 @@
 'use client'
 import { useGetUserInfoQuery } from "@/redux/users/userAPI";
-import { Avatar, SvgIcon, Typography } from "@mui/material";
+import { Avatar, Typography } from "@mui/material";
 import { UserInfoContainer } from "./Profile.styled";
 import { Clear, Done } from "@mui/icons-material";
 
@@ -11,9 +11,9 @@ type Props = {
 };
 
  function Profile({ params: { id } }: Props) {
-  
   const { data } = useGetUserInfoQuery(id);
-
+   console.log(data);
+   
   return (
     <div >
       <UserInfoContainer>

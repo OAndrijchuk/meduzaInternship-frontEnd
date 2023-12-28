@@ -1,6 +1,4 @@
-'use client'
-import { styled } from "@mui/material/styles";
-import Box from '@mui/material/Box';
+import { styled } from "@mui/material";
 
 export const FormStyled = styled('form')(({ theme }) => ({
     minWidth:"100%",
@@ -9,4 +7,3 @@ export const FormStyled = styled('form')(({ theme }) => ({
     alignItems: "center",
     gap: 16,
 }));
-
