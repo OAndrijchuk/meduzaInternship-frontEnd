@@ -4,7 +4,7 @@ export const invitesAPI = globalSplitApi.injectEndpoints({
     endpoints: (build) => ({
         addInvite: build.mutation({
             query: ({userId, companyId}) => ({
-                url: `company/${companyId}/invites`,
+                url: `company-invites/${companyId}`,
                 method: 'POST',
                 body: {
                     userId
@@ -14,14 +14,14 @@ export const invitesAPI = globalSplitApi.injectEndpoints({
         }),
         removeInvite: build.mutation({
             query: ({companyId, inviteId}) => ({
-                url: `company/${companyId}/invites/${inviteId}`,
+                url: `company-invites/${companyId}/${inviteId}`,
                 method: 'DELETE',
             }),
             invalidatesTags:['removeInvite'],
         }),
         updateInvite: build.mutation({
             query: ({values, companyId, inviteId}) => ({
-                    url: `company/${companyId}/invites/${inviteId}`,
+                    url: `company-invites/${companyId}/${inviteId}`,
                     method: 'PATCH',
                     body: values,
                 }),
