@@ -1,12 +1,15 @@
 'use client'
+import { Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-export const Test = styled("div")(() => ({
-    width: "100%",
-    height: "80vh",
+export const CompanyContainerStyled = styled(Paper)(() => ({
+    position:'relative',
+    minWidth: "320px",
+    height: "100%",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "left",
+    justifyContent: "flex-start",
     flexDirection: "column",
-    gap: 50
+    padding: '20px',
+    gap:'10px',
 }));

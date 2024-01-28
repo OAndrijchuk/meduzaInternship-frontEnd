@@ -13,6 +13,7 @@ PURGE,
 REGISTER, } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 import { loading } from "./middlewares";
+import { companiesReducer } from "./companies/companiesSlice";
 
 const persistConfig = {
   key: 'user',
@@ -28,6 +29,7 @@ export const store = configureStore({
         
         [userAPI.reducerPath]:userAPI.reducer,
         user: authPersistedReducer,
+        companies:companiesReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       serializableCheck: {

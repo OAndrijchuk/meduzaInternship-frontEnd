@@ -1,25 +1,47 @@
 "use client"
-import MockComponent from "@/Components/MockComponent/MockComponent";
-import { useAppSelector } from "@/hooks/redux";
-import { getUserToken } from "@/redux/users/selectors";
+import { useGetAllCompaniesQuery } from "@/redux/companies/companiesAPI";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { AddCompanyBtnStyled, MainStyled } from "./Companies.styled";
+import CompaniesList from "@/Components/CompaniesList/CompaniesList";
+import FAButton from "@/Components/ControlButtons/FAButton/FAButton";
+import { Add } from "@mui/icons-material";
+import TheModal from "@/Components/Modal/TheModal";
+import AddCompanyForm from "@/Components/AddCompanyForm/AddCompanyForm";
+import { useState } from "react";
+import RequestCompanyForm from "@/Components/RequestCompanyForm/RequestCompanyForm";
 
+type Props = {
+  searchParams: Record<string, string> | null | undefined;
+};
 
-export default function Companies() {
+export default function Companies({searchParams}:Props) {
   const router = useRouter()
-  const isAuth = useAppSelector(getUserToken)
+  const { data } = useGetAllCompaniesQuery({})
+  const [companyAction, setCompanyAction] = useState<string>('')
+  const [companyId, setCompanyId] = useState<null | number>(null)
 
-  useEffect(() => {
-    if (!isAuth) {
-      router.push('/signIn');
-    }
-  },[isAuth]);
+  const addCompany = () => {
+    setCompanyAction('createCompany');
+    router.push("companies?modal=true")
+  }
+  const createRequest = async ({id}:{id: number}) => {
+    Promise.all([setCompanyId(id), setCompanyAction('createRequest')]);
+    router.push("companies?modal=true")
+  }
+  const showModal = searchParams?.modal;
 
   return (
-    <div >
+    <MainStyled >
       <h1>This is page Companies!!!</h1>
-      <MockComponent/>
-    </div>
+      <CompaniesList data={data} actionButtons={{ add: createRequest }}/>
+      <AddCompanyBtnStyled>
+        <FAButton helpText="Add new company" icon={<Add />} onClick={addCompany} />
+      </AddCompanyBtnStyled>
+      {showModal &&
+        <TheModal>
+          {companyAction === 'createCompany' && <AddCompanyForm />}
+          {companyAction === 'createRequest' && companyId && <RequestCompanyForm companyId={companyId}/>}
+        </TheModal>}
+    </MainStyled>
   )
 }

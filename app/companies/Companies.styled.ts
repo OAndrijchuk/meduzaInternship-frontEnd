@@ -1,12 +1,15 @@
 'use client'
 import { styled } from "@mui/material/styles";
 
-export const Test = styled("div")(() => ({
+export const MainStyled = styled("main")(() => ({
     width: "100%",
-    height: "80vh",
+    height: "calc(100vh - 68px - 100px)",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     flexDirection: "column",
-    gap: 50
+    overflow:'auto',
+}));
+export const AddCompanyBtnStyled = styled('span')(() => ({
+    position:'fixed',
+    bottom: 100,
+    right: 20,
 }));

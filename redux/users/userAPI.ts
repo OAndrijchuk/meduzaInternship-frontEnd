@@ -21,7 +21,7 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 url: 'auth/me',
                 method: 'GET',
             }),
-            providesTags:['user'],
+            providesTags: ['user', 'removeInvite', 'addInvite', 'updateInvite', 'removeMember'],
             
         }),
         refreshToken: build.query({
@@ -43,14 +43,14 @@ export const userAPI = globalSplitApi.injectEndpoints({
                 url: 'user',
                 method: 'GET',
             }),
-            
+            providesTags: ['user', 'removeInvite', 'addInvite', 'updateInvite', 'removeMember'],
         }),
         getUserInfo: build.query({
             query: (id) => ({
                 url: `user/${id}`,
                 method: 'GET',
             }),
-            
+             providesTags: ['user'],
         }),
         removeAccount: build.mutation({
             query: () => ({
