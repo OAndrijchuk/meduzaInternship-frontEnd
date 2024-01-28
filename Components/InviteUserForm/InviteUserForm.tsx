@@ -25,7 +25,7 @@ const InviteUserForm = ({ userId }: Props) => {
     const sendInvite = async () => {
         try {
             if (!value) {
-                alert("Виберіть компанію. Поле Company не може бути порожнім");
+                alert("Choose a company. The Company field cannot be empty");
                 return;
             }
             const rezObj = {
@@ -35,7 +35,7 @@ const InviteUserForm = ({ userId }: Props) => {
             await createInvite(rezObj)
             router.push(pathname)
         } catch (error: any) {
-             alert(`Помилка: ${error.massage}`);
+             alert(`Error: ${error.massage}`);
         }
     }
 

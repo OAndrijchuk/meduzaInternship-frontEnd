@@ -8,7 +8,7 @@ import { ActionButtonsType, ICompany } from '@/Types';
 import ActionButtons from '../ActionButtons/ActionButtons';
 
 type Props = {
-  data: [ICompany]
+  data: ICompany[]
   actionButtons?: ActionButtonsType;
 }
 

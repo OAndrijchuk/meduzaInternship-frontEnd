@@ -6,7 +6,7 @@ import { Item, StatusStyled, UserNameLink } from './InviteAndRequestList.styled'
 import ActionButtons from '../ActionButtons/ActionButtons';
 
 interface Props {
-  data: Array<IInviteOrRequest>
+  data: IInviteOrRequest[]
   type?: ActionType
   actionButtons?: ActionButtonsType;
 }

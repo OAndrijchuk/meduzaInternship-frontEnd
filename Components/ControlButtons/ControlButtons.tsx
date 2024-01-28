@@ -3,7 +3,6 @@ import { ButtonsContainer } from './ControlButtons.styled'
 import FAButton from './FAButton/FAButton'
 import { SendAndArchive, Edit, Delete } from '@mui/icons-material';
 import { FunctionType } from '@/Types';
-// import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
 
 type Props = {
     remove: FunctionType;

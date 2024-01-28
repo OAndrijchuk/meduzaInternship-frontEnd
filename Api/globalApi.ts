@@ -2,6 +2,8 @@ import { RootState} from '@/redux/store';
 import { setIsAuthRefresh, setUserToken } from '@/redux/users/usersSlice';
 import { createApi, fetchBaseQuery, BaseQueryFn, FetchBaseQueryError, FetchArgs } from '@reduxjs/toolkit/query/react';
 
+
+
  const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL,
     credentials: 'include',
@@ -28,11 +30,11 @@ import { createApi, fetchBaseQuery, BaseQueryFn, FetchBaseQueryError, FetchArgs 
   FetchBaseQueryError
    > = async (args, api, extraOptions) => {
   try {
-    let result: any = await baseQuery(args, api, extraOptions)
+    let result = await baseQuery(args, api, extraOptions)
     
     if (result.error && result.error.originalStatus === 401) {
       api.dispatch(setIsAuthRefresh(false))
-      const refreshResult:any = await baseQuery('auth/refresh', api, extraOptions)
+      const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
       if (refreshResult.data) {
         api.dispatch(setUserToken(refreshResult.data.token))
         result = await baseQuery(args, api, extraOptions)
@@ -44,11 +46,11 @@ import { createApi, fetchBaseQuery, BaseQueryFn, FetchBaseQueryError, FetchArgs 
   return result
   } catch (error) {
     console.error('Error in baseQueryWithReauth:', error);
-    throw error; // Re-throw the error after handling it
+    throw error;
   }
 }
 
-export const globalSplitApi:any = createApi({
+export const globalSplitApi = createApi({
   baseQuery:baseQueryWithReauth,
   reducerPath: 'GlobalAPI',
   tagTypes:['user', 'company', 'companyInfo', 'addInvite', 'removeInvite', 'updateInvite', 'removeMember'],
